@@ -1,0 +1,664 @@
+@page "/oferty"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Oferty Nieruchomoœci - BetonoweZloto.pl</PageTitle>
+
+<!-- Page Header -->
+<section class="bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white py-16">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Przegl¹daj Oferty</h1>
+        <p class="text-xl text-gray-300">ZnajdŸ idealn¹ nieruchomoœæ dla siebie</p>
+    </div>
+</section>
+
+<!-- Search and Filters Section -->
+<section class="bg-white shadow-lg -mt-8 relative z-10">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Main Search Bar -->
+        <div class="mb-6">
+            <label for="search-input" class="block text-sm font-semibold text-gray-700 mb-2">
+                Czego szukasz?
+            </label>
+            <div class="relative">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    @bind="searchQuery"
+                    @bind:event="oninput"
+                    placeholder="Wpisz lokalizacjê, dzielnicê lub adres…"
+                    class="w-full px-4 py-4 pr-12 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all"
+                    aria-label="Wpisz lokalizacjê do wyszukania" />
+                <svg class="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Filters Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <!-- Transaction Type Filter -->
+            <div>
+                <label for="transaction-type" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Typ transakcji
+                </label>
+                <select 
+                    id="transaction-type"
+                    @bind="selectedTransactionType"
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all appearance-none bg-white cursor-pointer"
+                    aria-label="Wybierz typ transakcji">
+                    <option value="">Wszystkie</option>
+                    <option value="sale">Sprzeda¿</option>
+                    <option value="rent">Wynajem</option>
+                </select>
+            </div>
+
+            <!-- Property Type Filter -->
+            <div>
+                <label for="property-type" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Typ nieruchomoœci
+                </label>
+                <select 
+                    id="property-type"
+                    @bind="selectedPropertyType"
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all appearance-none bg-white cursor-pointer"
+                    aria-label="Wybierz typ nieruchomoœci">
+                    <option value="">Wszystkie</option>
+                    <option value="apartment">Mieszkanie</option>
+                    <option value="house">Dom</option>
+                    <option value="plot">Dzia³ka</option>
+                    <option value="commercial">Lokal u¿ytkowy</option>
+                </select>
+            </div>
+
+            <!-- Price Range Filter -->
+            <div>
+                <label for="price-max" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Cena maksymalna (z³)
+                </label>
+                <input 
+                    type="number" 
+                    id="price-max"
+                    @bind="maxPrice"
+                    placeholder="np. 1 000 000"
+                    min="0"
+                    step="10000"
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all"
+                    aria-label="Wpisz maksymaln¹ cenê" />
+            </div>
+
+            <!-- Area Range Filter -->
+            <div>
+                <label for="area-min" class="block text-sm font-semibold text-gray-700 mb-2">
+                    Metra¿ minimalny (m?)
+                </label>
+                <input 
+                    type="number" 
+                    id="area-min"
+                    @bind="minArea"
+                    placeholder="np. 50"
+                    min="0"
+                    step="5"
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all"
+                    aria-label="Wpisz minimalny metra¿" />
+            </div>
+        </div>
+
+        <!-- Advanced Filters Toggle -->
+        <div class="mb-6">
+            <button 
+                type="button"
+                @onclick="ToggleAdvancedFilters"
+                class="text-gold-600 hover:text-gold-700 font-semibold flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 rounded p-2 -m-2"
+                aria-expanded="@showAdvancedFilters"
+                aria-controls="advanced-filters">
+                <svg class="w-5 h-5 mr-2 transition-transform @(showAdvancedFilters ? "rotate-180" : "")" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+                @(showAdvancedFilters ? "Ukryj filtry zaawansowane" : "Poka¿ filtry zaawansowane")
+            </button>
+        </div>
+
+        <!-- Advanced Filters -->
+        @if (showAdvancedFilters)
+        {
+            <div id="advanced-filters" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-6 bg-gray-50 rounded-lg">
+                <!-- Rooms Filter -->
+                <div>
+                    <label for="rooms" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Liczba pokoi
+                    </label>
+                    <select 
+                        id="rooms"
+                        @bind="selectedRooms"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all appearance-none bg-white cursor-pointer"
+                        aria-label="Wybierz liczbê pokoi">
+                        <option value="0">Dowolna</option>
+                        <option value="1">1 pokój</option>
+                        <option value="2">2 pokoje</option>
+                        <option value="3">3 pokoje</option>
+                        <option value="4">4 pokoje</option>
+                        <option value="5">5+ pokoi</option>
+                    </select>
+                </div>
+
+                <!-- Floor Filter -->
+                <div>
+                    <label for="floor" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Piêtro
+                    </label>
+                    <select 
+                        id="floor"
+                        @bind="selectedFloor"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all appearance-none bg-white cursor-pointer"
+                        aria-label="Wybierz piêtro">
+                        <option value="">Dowolne</option>
+                        <option value="ground">Parter</option>
+                        <option value="1-3">1-3 piêtro</option>
+                        <option value="4+">4+ piêtro</option>
+                    </select>
+                </div>
+
+                <!-- Year Built Filter -->
+                <div>
+                    <label for="year-built" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Rok budowy (min.)
+                    </label>
+                    <input 
+                        type="number" 
+                        id="year-built"
+                        @bind="minYearBuilt"
+                        placeholder="np. 2010"
+                        min="1900"
+                        max="2024"
+                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all"
+                        aria-label="Wpisz minimalny rok budowy" />
+                </div>
+            </div>
+        }
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4">
+            <button 
+                type="button"
+                @onclick="ApplyFilters"
+                class="flex-1 sm:flex-none px-8 py-3 bg-gold-500 text-gray-900 font-semibold rounded-lg hover:bg-gold-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gold-500/50 touch-manipulation"
+                aria-label="Zastosuj wybrane filtry">
+                Szukaj (@FilteredProperties.Count ofert)
+            </button>
+            <button 
+                type="button"
+                @onclick="ResetFilters"
+                class="px-8 py-3 bg-gray-200 text-gray-700 font-semibold rounded-lg hover:bg-gray-300 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-300/50 touch-manipulation"
+                aria-label="Wyczyœæ wszystkie filtry">
+                Wyczyœæ filtry
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Results and Map Section -->
+<section class="py-12 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <!-- View Toggle -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900">
+                    Znaleziono @FilteredProperties.Count @(FilteredProperties.Count == 1 ? "ofertê" : FilteredProperties.Count < 5 ? "oferty" : "ofert")
+                </h2>
+            </div>
+            <div class="flex gap-2 bg-white rounded-lg p-1 shadow-sm" role="group" aria-label="Prze³¹cz widok">
+                <button 
+                    type="button"
+                    @onclick="() => viewMode = ViewMode.Grid"
+                    class="px-4 py-2 rounded-md font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 @(viewMode == ViewMode.Grid ? "bg-gold-500 text-gray-900" : "text-gray-600 hover:bg-gray-100")"
+                    aria-pressed="@(viewMode == ViewMode.Grid)"
+                    aria-label="Widok siatki">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                    </svg>
+                </button>
+                <button 
+                    type="button"
+                    @onclick="() => viewMode = ViewMode.List"
+                    class="px-4 py-2 rounded-md font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 @(viewMode == ViewMode.List ? "bg-gold-500 text-gray-900" : "text-gray-600 hover:bg-gray-100")"
+                    aria-pressed="@(viewMode == ViewMode.List)"
+                    aria-label="Widok listy">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <button 
+                    type="button"
+                    @onclick="() => viewMode = ViewMode.Map"
+                    class="px-4 py-2 rounded-md font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 @(viewMode == ViewMode.Map ? "bg-gold-500 text-gray-900" : "text-gray-600 hover:bg-gray-100")"
+                    aria-pressed="@(viewMode == ViewMode.Map)"
+                    aria-label="Widok mapy">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        @if (viewMode == ViewMode.Map)
+        {
+            <!-- Map View -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div id="map" class="w-full h-[600px] relative" role="region" aria-label="Mapa z lokalizacjami nieruchomoœci">
+                    <div class="absolute inset-0 flex items-center justify-center bg-gray-100">
+                        <div class="text-center">
+                            <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                            </svg>
+                            <p class="text-gray-600 font-medium">Mapa z lokalizacjami nieruchomoœci</p>
+                            <p class="text-sm text-gray-500 mt-2">@FilteredProperties.Count @(FilteredProperties.Count == 1 ? "oferta" : "oferty") na mapie</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Map Properties List Sidebar -->
+                <div class="max-h-[300px] overflow-y-auto border-t border-gray-200">
+                    @foreach (var property in FilteredProperties)
+                    {
+                        <div class="p-4 border-b border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors" @onclick="() => SelectProperty(property)">
+                            <div class="flex gap-4">
+                                <img src="@property.ImageUrl" alt="@property.Title" class="w-24 h-24 object-cover rounded-lg flex-shrink-0" loading="lazy" />
+                                <div class="flex-1 min-w-0">
+                                    <h3 class="font-bold text-gray-900 mb-1 truncate">@property.Title</h3>
+                                    <p class="text-sm text-gray-600 mb-2">@property.Location</p>
+                                    <p class="text-lg font-bold text-gold-600">@property.Price</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else if (viewMode == ViewMode.Grid)
+        {
+            <!-- Grid View -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach (var property in FilteredProperties)
+                {
+                    <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 group">
+                        <div class="relative overflow-hidden aspect-[4/3]">
+                            <img src="@property.ImageUrl" 
+                                 alt="@property.Title" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 loading="lazy" />
+                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-gray-900">
+                                @property.TransactionTypeLabel
+                            </div>
+                            <div class="absolute top-4 right-4 bg-gold-500 text-gray-900 px-4 py-2 rounded-full font-bold text-lg shadow-lg">
+                                @property.Price
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-gold-600 font-semibold mb-2">@property.PropertyTypeLabel</div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">@property.Title</h3>
+                            <div class="flex items-center text-gray-600 mb-4">
+                                <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span class="truncate">@property.Location</span>
+                            </div>
+                            <div class="flex gap-4 mb-6 text-gray-700 text-sm">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                    </svg>
+                                    <span>@property.Area&nbsp;m?</span>
+                                </div>
+                                @if (property.Rooms > 0)
+                                {
+                                    <div class="flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                        </svg>
+                                        <span>@property.Rooms&nbsp;@(property.Rooms == 1 ? "pokój" : property.Rooms < 5 ? "pokoje" : "pokoi")</span>
+                                    </div>
+                                }
+                            </div>
+                            <button class="w-full bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-gray-900/50 touch-manipulation"
+                                    @onclick="() => SelectProperty(property)"
+                                    aria-label="Zobacz szczegó³y oferty @property.Title">
+                                Zobacz szczegó³y
+                            </button>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+        else
+        {
+            <!-- List View -->
+            <div class="space-y-6">
+                @foreach (var property in FilteredProperties)
+                {
+                    <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+                        <div class="flex flex-col md:flex-row">
+                            <div class="relative md:w-80 flex-shrink-0 aspect-[4/3] md:aspect-auto">
+                                <img src="@property.ImageUrl" 
+                                     alt="@property.Title" 
+                                     class="w-full h-full object-cover"
+                                     loading="lazy" />
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-gray-900">
+                                    @property.TransactionTypeLabel
+                                </div>
+                            </div>
+                            <div class="flex-1 p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <div class="text-sm text-gold-600 font-semibold mb-2">@property.PropertyTypeLabel</div>
+                                        <h3 class="text-2xl font-bold text-gray-900 mb-2">@property.Title</h3>
+                                        <div class="flex items-center text-gray-600">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                            </svg>
+                                            <span>@property.Location</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-3xl font-bold text-gold-600">@property.Price</div>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6 mb-6 text-gray-700">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                        </svg>
+                                        <span>@property.Area&nbsp;m?</span>
+                                    </div>
+                                    @if (property.Rooms > 0)
+                                    {
+                                        <div class="flex items-center">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                            </svg>
+                                            <span>@property.Rooms&nbsp;@(property.Rooms == 1 ? "pokój" : property.Rooms < 5 ? "pokoje" : "pokoi")</span>
+                                        </div>
+                                    }
+                                    @if (property.YearBuilt.HasValue)
+                                    {
+                                        <div class="flex items-center">
+                                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            <span>Rok&nbsp;@property.YearBuilt</span>
+                                        </div>
+                                    }
+                                </div>
+                                <button class="px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-gray-900/50 touch-manipulation"
+                                        @onclick="() => SelectProperty(property)"
+                                        aria-label="Zobacz szczegó³y oferty @property.Title">
+                                    Zobacz szczegó³y
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+
+        @if (FilteredProperties.Count == 0)
+        {
+            <div class="text-center py-16">
+                <svg class="w-24 h-24 text-gray-300 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">Nie znaleziono ofert</h3>
+                <p class="text-gray-600 mb-8">Spróbuj zmieniæ kryteria wyszukiwania lub wyczyœciæ filtry</p>
+                <button 
+                    type="button"
+                    @onclick="ResetFilters"
+                    class="px-8 py-3 bg-gold-500 text-gray-900 font-semibold rounded-lg hover:bg-gold-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gold-500/50 touch-manipulation">
+                    Wyczyœæ filtry
+                </button>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Leaflet Map Script -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<script>
+    window.initializeMap = function() {
+        if (document.getElementById('map') && typeof L !== 'undefined') {
+            // Initialize map centered on Poland
+            const map = L.map('map').setView([52.0693, 19.4803], 6);
+            
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Store map instance for later use
+            window.propertyMap = map;
+            
+            return true;
+        }
+        return false;
+    };
+    
+    window.addMapMarkers = function(properties) {
+        if (window.propertyMap) {
+            // Clear existing markers
+            window.propertyMap.eachLayer(function(layer) {
+                if (layer instanceof L.Marker) {
+                    window.propertyMap.removeLayer(layer);
+                }
+            });
+            
+            // Add new markers
+            const bounds = [];
+            properties.forEach(function(property) {
+                if (property.latitude && property.longitude) {
+                    const marker = L.marker([property.latitude, property.longitude])
+                        .addTo(window.propertyMap)
+                        .bindPopup(`
+                            <div class="p-2">
+                                <img src="${property.imageUrl}" alt="${property.title}" class="w-48 h-32 object-cover rounded mb-2" />
+                                <h4 class="font-bold text-sm mb-1">${property.title}</h4>
+                                <p class="text-xs text-gray-600 mb-1">${property.location}</p>
+                                <p class="font-bold text-gold-600">${property.price}</p>
+                            </div>
+                        `);
+                    bounds.push([property.latitude, property.longitude]);
+                }
+            });
+            
+            // Fit map to show all markers
+            if (bounds.length > 0) {
+                window.propertyMap.fitBounds(bounds, { padding: [50, 50] });
+            }
+        }
+    };
+</script>
+
+@code {
+    private enum ViewMode { Grid, List, Map }
+    
+    private ViewMode viewMode = ViewMode.Grid;
+    private bool showAdvancedFilters = false;
+    
+    // Filter values
+    private string searchQuery = "";
+    private string selectedTransactionType = "";
+    private string selectedPropertyType = "";
+    private int? maxPrice = null;
+    private int? minArea = null;
+    private int selectedRooms = 0;
+    private string selectedFloor = "";
+    private int? minYearBuilt = null;
+    
+    private class Property
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = "";
+        public string Location { get; set; } = "";
+        public string City { get; set; } = "";
+        public string Price { get; set; } = "";
+        public int PriceValue { get; set; }
+        public int Area { get; set; }
+        public int Rooms { get; set; }
+        public string ImageUrl { get; set; } = "";
+        public string TransactionType { get; set; } = ""; // sale, rent
+        public string PropertyType { get; set; } = ""; // apartment, house, plot, commercial
+        public int? YearBuilt { get; set; }
+        public string Floor { get; set; } = "";
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        
+        public string TransactionTypeLabel => TransactionType == "sale" ? "Sprzeda¿" : "Wynajem";
+        public string PropertyTypeLabel => PropertyType switch
+        {
+            "apartment" => "Mieszkanie",
+            "house" => "Dom",
+            "plot" => "Dzia³ka",
+            "commercial" => "Lokal u¿ytkowy",
+            _ => "Nieruchomoœæ"
+        };
+    }
+    
+    private List<Property> AllProperties = new();
+    private List<Property> FilteredProperties = new();
+    
+    protected override void OnInitialized()
+    {
+        // Sample data - in production this would come from an API
+        AllProperties = new List<Property>
+        {
+            new Property { Id = 1, Title = "Nowoczesne Mieszkanie w Centrum", Location = "Warszawa, Œródmieœcie", City = "Warszawa", Price = "890 000 z³", PriceValue = 890000, Area = 65, Rooms = 3, ImageUrl = "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800", TransactionType = "sale", PropertyType = "apartment", YearBuilt = 2020, Floor = "1-3", Latitude = 52.2297, Longitude = 21.0122 },
+            new Property { Id = 2, Title = "Przestronny Dom z Ogrodem", Location = "Kraków, Bronowice", City = "Kraków", Price = "1 450 000 z³", PriceValue = 1450000, Area = 180, Rooms = 5, ImageUrl = "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=800", TransactionType = "sale", PropertyType = "house", YearBuilt = 2018, Latitude = 50.0647, Longitude = 19.9450 },
+            new Property { Id = 3, Title = "Apartament z Widokiem na Morze", Location = "Gdañsk, Przymorze", City = "Gdañsk", Price = "720 000 z³", PriceValue = 720000, Area = 52, Rooms = 2, ImageUrl = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800", TransactionType = "sale", PropertyType = "apartment", YearBuilt = 2019, Floor = "4+", Latitude = 54.3520, Longitude = 18.6466 },
+            new Property { Id = 4, Title = "Luksusowy Penthouse", Location = "Wroc³aw, Stare Miasto", City = "Wroc³aw", Price = "2 100 000 z³", PriceValue = 2100000, Area = 120, Rooms = 4, ImageUrl = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800", TransactionType = "sale", PropertyType = "apartment", YearBuilt = 2021, Floor = "4+", Latitude = 51.1079, Longitude = 17.0385 },
+            new Property { Id = 5, Title = "Kameralne Mieszkanie dla Singla", Location = "Poznañ, Je¿yce", City = "Poznañ", Price = "420 000 z³", PriceValue = 420000, Area = 38, Rooms = 2, ImageUrl = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=800", TransactionType = "sale", PropertyType = "apartment", YearBuilt = 2015, Floor = "1-3", Latitude = 52.4064, Longitude = 16.9252 },
+            new Property { Id = 6, Title = "Rodzinny Dom z Tarasem", Location = "Katowice, Ligota", City = "Katowice", Price = "980 000 z³", PriceValue = 980000, Area = 145, Rooms = 4, ImageUrl = "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=800", TransactionType = "sale", PropertyType = "house", YearBuilt = 2017, Latitude = 50.2649, Longitude = 19.0238 },
+            new Property { Id = 7, Title = "Mieszkanie do Wynajêcia", Location = "Warszawa, Mokotów", City = "Warszawa", Price = "3 500 z³/mc", PriceValue = 3500, Area = 55, Rooms = 2, ImageUrl = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=800", TransactionType = "rent", PropertyType = "apartment", YearBuilt = 2016, Floor = "1-3", Latitude = 52.1672, Longitude = 21.0405 },
+            new Property { Id = 8, Title = "Lokal U¿ytkowy w Centrum", Location = "Kraków, Kazimierz", City = "Kraków", Price = "850 000 z³", PriceValue = 850000, Area = 80, Rooms = 0, ImageUrl = "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800", TransactionType = "sale", PropertyType = "commercial", YearBuilt = 1920, Floor = "ground", Latitude = 50.0520, Longitude = 19.9467 },
+            new Property { Id = 9, Title = "Dom na Wynajem D³ugoterminowy", Location = "Gdynia, Or³owo", City = "Gdynia", Price = "6 000 z³/mc", PriceValue = 6000, Area = 120, Rooms = 4, ImageUrl = "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?q=80&w=800", TransactionType = "rent", PropertyType = "house", YearBuilt = 2010, Latitude = 54.5189, Longitude = 18.5305 },
+            new Property { Id = 10, Title = "Dzia³ka Budowlana", Location = "Wroc³aw, Psie Pole", City = "Wroc³aw", Price = "450 000 z³", PriceValue = 450000, Area = 1200, Rooms = 0, ImageUrl = "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800", TransactionType = "sale", PropertyType = "plot", Latitude = 51.1328, Longitude = 17.0713 },
+            new Property { Id = 11, Title = "Studio w Nowym Budownictwie", Location = "Warszawa, Wilanów", City = "Warszawa", Price = "650 000 z³", PriceValue = 650000, Area = 35, Rooms = 1, ImageUrl = "https://images.unsplash.com/photo-1536376072261-38c75010e6c9?q=80&w=800", TransactionType = "sale", PropertyType = "apartment", YearBuilt = 2023, Floor = "1-3", Latitude = 52.1658, Longitude = 21.0894 },
+            new Property { Id = 12, Title = "Apartament na Wynajem Krótkoterminowy", Location = "Kraków, Stare Miasto", City = "Kraków", Price = "4 200 z³/mc", PriceValue = 4200, Area = 45, Rooms = 1, ImageUrl = "https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=800", TransactionType = "rent", PropertyType = "apartment", YearBuilt = 2019, Floor = "ground", Latitude = 50.0614, Longitude = 19.9365 },
+        };
+        
+        FilteredProperties = AllProperties.ToList();
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (viewMode == ViewMode.Map)
+        {
+            await Task.Delay(100); // Give DOM time to render
+            await JSRuntime.InvokeVoidAsync("initializeMap");
+            await UpdateMapMarkers();
+        }
+    }
+    
+    private void ToggleAdvancedFilters()
+    {
+        showAdvancedFilters = !showAdvancedFilters;
+    }
+    
+    private void ApplyFilters()
+    {
+        FilteredProperties = AllProperties.Where(p =>
+        {
+            // Search query filter
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                var query = searchQuery.ToLower();
+                if (!p.Title.ToLower().Contains(query) && 
+                    !p.Location.ToLower().Contains(query) &&
+                    !p.City.ToLower().Contains(query))
+                {
+                    return false;
+                }
+            }
+            
+            // Transaction type filter
+            if (!string.IsNullOrWhiteSpace(selectedTransactionType) && p.TransactionType != selectedTransactionType)
+                return false;
+            
+            // Property type filter
+            if (!string.IsNullOrWhiteSpace(selectedPropertyType) && p.PropertyType != selectedPropertyType)
+                return false;
+            
+            // Price filter
+            if (maxPrice.HasValue && p.PriceValue > maxPrice.Value)
+                return false;
+            
+            // Area filter
+            if (minArea.HasValue && p.Area < minArea.Value)
+                return false;
+            
+            // Rooms filter
+            if (selectedRooms > 0)
+            {
+                if (selectedRooms == 5 && p.Rooms < 5)
+                    return false;
+                else if (selectedRooms < 5 && p.Rooms != selectedRooms)
+                    return false;
+            }
+            
+            // Floor filter
+            if (!string.IsNullOrWhiteSpace(selectedFloor) && p.Floor != selectedFloor)
+                return false;
+            
+            // Year built filter
+            if (minYearBuilt.HasValue && (!p.YearBuilt.HasValue || p.YearBuilt.Value < minYearBuilt.Value))
+                return false;
+            
+            return true;
+        }).ToList();
+        
+        StateHasChanged();
+    }
+    
+    private void ResetFilters()
+    {
+        searchQuery = "";
+        selectedTransactionType = "";
+        selectedPropertyType = "";
+        maxPrice = null;
+        minArea = null;
+        selectedRooms = 0;
+        selectedFloor = "";
+        minYearBuilt = null;
+        showAdvancedFilters = false;
+        
+        FilteredProperties = AllProperties.ToList();
+        StateHasChanged();
+    }
+    
+    private void SelectProperty(Property property)
+    {
+        // In a real application, this would navigate to a detail page
+        // For now, just show an alert or log
+        Console.WriteLine($"Selected property: {property.Title}");
+    }
+    
+    private async Task UpdateMapMarkers()
+    {
+        if (viewMode == ViewMode.Map)
+        {
+            var properties = FilteredProperties.Select(p => new
+            {
+                title = p.Title,
+                location = p.Location,
+                price = p.Price,
+                imageUrl = p.ImageUrl,
+                latitude = p.Latitude,
+                longitude = p.Longitude
+            }).ToArray();
+            
+            await JSRuntime.InvokeVoidAsync("addMapMarkers", properties);
+        }
+    }
+}
