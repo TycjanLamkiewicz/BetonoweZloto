@@ -1,6 +1,4 @@
 @page "/kontakt"
-@using Microsoft.JSInterop
-@inject IJSRuntime JSRuntime
 
 <PageTitle>Kontakt - BetonoweZloto.pl</PageTitle>
 
@@ -69,194 +67,176 @@
     </div>
 </section>
 
-<!-- Contact Form & Map -->
+<!-- Contact Form -->
 <section class="py-12 bg-gray-50">
     <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Contact Form -->
-                <div class="bg-white rounded-2xl shadow-lg p-8">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-6">Wyœlij Wiadomoœæ</h2>
-                    <form @onsubmit="HandleSubmit" @onsubmit:preventDefault>
-                        <div class="space-y-6">
-                            <!-- Name -->
-                            <div>
-                                <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Imiê i nazwisko <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="name"
-                                    @bind="formData.Name"
-                                    required
-                                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all @(GetFieldErrorClass(nameof(formData.Name)))"
-                                    placeholder="Jan Kowalski"
-                                    aria-required="true"
-                                    aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Name))))"
-                                    aria-describedby="@(errors.ContainsKey(nameof(formData.Name)) ? "name-error" : null)" />
-                                @if (errors.ContainsKey(nameof(formData.Name)))
-                                {
-                                    <p id="name-error" class="mt-1 text-sm text-red-600">@errors[nameof(formData.Name)]</p>
-                                }
-                            </div>
-                            
-                            <!-- Email -->
-                            <div>
-                                <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    E-mail <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="email" 
-                                    id="email"
-                                    @bind="formData.Email"
-                                    required
-                                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all @(GetFieldErrorClass(nameof(formData.Email)))"
-                                    placeholder="jan.kowalski@example.com"
-                                    aria-required="true"
-                                    aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Email))))"
-                                    aria-describedby="@(errors.ContainsKey(nameof(formData.Email)) ? "email-error" : null)" />
-                                @if (errors.ContainsKey(nameof(formData.Email)))
-                                {
-                                    <p id="email-error" class="mt-1 text-sm text-red-600">@errors[nameof(formData.Email)]</p>
-                                }
-                            </div>
-                            
-                            <!-- Phone -->
-                            <div>
-                                <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Telefon <span class="text-red-500">*</span>
-                                </label>
-                                <input 
-                                    type="tel" 
-                                    id="phone"
-                                    @bind="formData.Phone"
-                                    required
-                                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all @(GetFieldErrorClass(nameof(formData.Phone)))"
-                                    placeholder="+48 123 456 789"
-                                    aria-required="true"
-                                    aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Phone))))"
-                                    aria-describedby="@(errors.ContainsKey(nameof(formData.Phone)) ? "phone-error" : null)" />
-                                @if (errors.ContainsKey(nameof(formData.Phone)))
-                                {
-                                    <p id="phone-error" class="mt-1 text-sm text-red-600">@errors[nameof(formData.Phone)]</p>
-                                }
-                            </div>
-                            
-                            <!-- Subject -->
-                            <div>
-                                <label for="subject" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Temat <span class="text-red-500">*</span>
-                                </label>
-                                <select 
-                                    id="subject"
-                                    @bind="formData.Subject"
-                                    required
-                                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all appearance-none bg-white cursor-pointer"
-                                    aria-required="true">
-                                    <option value="">Wybierz temat…</option>
-                                    <option value="buy">Chcê kupiæ nieruchomoœæ</option>
-                                    <option value="sell">Chcê sprzedaæ nieruchomoœæ</option>
-                                    <option value="rent">Szukam wynajmu</option>
-                                    <option value="valuation">Wycena nieruchomoœci</option>
-                                    <option value="other">Inne pytanie</option>
-                                </select>
-                            </div>
-                            
-                            <!-- Message -->
-                            <div>
-                                <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">
-                                    Wiadomoœæ <span class="text-red-500">*</span>
-                                </label>
-                                <textarea 
-                                    id="message"
-                                    @bind="formData.Message"
-                                    required
-                                    rows="5"
-                                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all resize-y @(GetFieldErrorClass(nameof(formData.Message)))"
-                                    placeholder="Opisz swoje pytanie lub potrzeby…"
-                                    aria-required="true"
-                                    aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Message))))"
-                                    aria-describedby="@(errors.ContainsKey(nameof(formData.Message)) ? "message-error" : null)"></textarea>
-                                @if (errors.ContainsKey(nameof(formData.Message)))
-                                {
-                                    <p id="message-error" class="mt-1 text-sm text-red-600">@errors[nameof(formData.Message)]</p>
-                                }
-                            </div>
-                            
-                            <!-- GDPR Consent -->
-                            <div class="flex items-start">
-                                <input 
-                                    type="checkbox" 
-                                    id="consent"
-                                    @bind="formData.GdprConsent"
-                                    required
-                                    class="w-5 h-5 text-gold-500 border-gray-300 rounded focus:ring-4 focus:ring-gold-500/20 mt-1 cursor-pointer"
-                                    aria-required="true" />
-                                <label for="consent" class="ml-3 text-sm text-gray-700 cursor-pointer">
-                                    Wyra¿am zgodê na przetwarzanie moich danych osobowych zgodnie z&nbsp;<a href="/polityka-prywatnosci" class="text-gold-600 hover:text-gold-700 underline focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 rounded">polityk¹ prywatnoœci</a> <span class="text-red-500">*</span>
-                                </label>
-                            </div>
-                            
-                            <!-- Submit Button -->
-                            <button 
-                                type="submit"
-                                disabled="@isSubmitting"
-                                class="w-full px-8 py-4 bg-gold-500 text-gray-900 font-semibold rounded-lg hover:bg-gold-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gold-500/50 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation">
-                                @if (isSubmitting)
-                                {
-                                    <span class="flex items-center justify-center">
-                                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        Wysy³anie...
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span>Wyœlij wiadomoœæ</span>
-                                }
-                            </button>
+        <div class="max-w-3xl mx-auto">
+            <!-- Contact Form -->
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Wyœlij Wiadomoœæ</h2>
+                <form @onsubmit="HandleSubmit" @onsubmit:preventDefault>
+                    <div class="space-y-6">
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Imiê i nazwisko <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="name"
+                                @bind="formData.Name"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all @(GetFieldErrorClass(nameof(formData.Name)))"
+                                placeholder="Jan Kowalski"
+                                aria-required="true"
+                                aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Name))))"
+                                aria-describedby="@(errors.ContainsKey(nameof(formData.Name)) ? "name-error" : null)" />
+                            @if (errors.ContainsKey(nameof(formData.Name)))
+                            {
+                                <p id="name-error" class="mt-1 text-sm text-red-600">@errors[nameof(formData.Name)]</p>
+                            }
                         </div>
-                    </form>
-                    
-                    @if (!string.IsNullOrEmpty(submitMessage))
-                    {
-                        <div class="mt-6 p-4 @(submitSuccess ? "bg-green-50 text-green-800 border-green-200" : "bg-red-50 text-red-800 border-red-200") border-2 rounded-lg" role="alert">
-                            <div class="flex items-start">
-                                @if (submitSuccess)
-                                {
-                                    <svg class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                }
-                                else
-                                {
-                                    <svg class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                }
-                                <p class="font-medium">@submitMessage</p>
-                            </div>
+                        
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                                E-mail <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email"
+                                @bind="formData.Email"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all @(GetFieldErrorClass(nameof(formData.Email)))"
+                                placeholder="jan.kowalski@example.com"
+                                aria-required="true"
+                                aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Email))))"
+                                aria-describedby="@(errors.ContainsKey(nameof(formData.Email)) ? "email-error" : null)" />
+                            @if (errors.ContainsKey(nameof(formData.Email)))
+                            {
+                                <p id="email-error" class="mt-1 text-sm text-red-600">@errors[nameof(formData.Email)]</p>
+                            }
                         </div>
-                    }
-                </div>
+                        
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Telefon <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="tel" 
+                                id="phone"
+                                @bind="formData.Phone"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all @(GetFieldErrorClass(nameof(formData.Phone)))"
+                                placeholder="+48 123 456 789"
+                                aria-required="true"
+                                aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Phone))))"
+                                aria-describedby="@(errors.ContainsKey(nameof(formData.Phone)) ? "phone-error" : null)" />
+                            @if (errors.ContainsKey(nameof(formData.Phone)))
+                            {
+                                <p id="phone-error" class="mt-1 text-sm text-red-600">@errors[nameof(formData.Phone)]</p>
+                            }
+                        </div>
+                        
+                        <!-- Subject -->
+                        <div>
+                            <label for="subject" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Temat <span class="text-red-500">*</span>
+                            </label>
+                            <select 
+                                id="subject"
+                                @bind="formData.Subject"
+                                required
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all appearance-none bg-white cursor-pointer"
+                                aria-required="true">
+                                <option value="">Wybierz temat…</option>
+                                <option value="buy">Chcê kupiæ nieruchomoœæ</option>
+                                <option value="sell">Chcê sprzedaæ nieruchomoœæ</option>
+                                <option value="rent">Szukam wynajmu</option>
+                                <option value="valuation">Wycena nieruchomoœci</option>
+                                <option value="other">Inne pytanie</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Message -->
+                        <div>
+                            <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Wiadomoœæ <span class="text-red-500">*</span>
+                            </label>
+                            <textarea 
+                                id="message"
+                                @bind="formData.Message"
+                                required
+                                rows="5"
+                                class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all resize-y @(GetFieldErrorClass(nameof(formData.Message)))"
+                                placeholder="Opisz swoje pytanie lub potrzeby…"
+                                aria-required="true"
+                                aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Message))))"
+                                aria-describedby="@(errors.ContainsKey(nameof(formData.Message)) ? "message-error" : null)"></textarea>
+                            @if (errors.ContainsKey(nameof(formData.Message)))
+                            {
+                                <p id="message-error" class="mt-1 text-sm text-red-600">@errors[nameof(formData.Message)]</p>
+                            }
+                        </div>
+                        
+                        <!-- GDPR Consent -->
+                        <div class="flex items-start">
+                            <input 
+                                type="checkbox" 
+                                id="consent"
+                                @bind="formData.GdprConsent"
+                                required
+                                class="w-5 h-5 text-gold-500 border-gray-300 rounded focus:ring-4 focus:ring-gold-500/20 mt-1 cursor-pointer"
+                                aria-required="true" />
+                            <label for="consent" class="ml-3 text-sm text-gray-700 cursor-pointer">
+                                Wyra¿am zgodê na przetwarzanie moich danych osobowych zgodnie z&nbsp;<a href="/polityka-prywatnosci" class="text-gold-600 hover:text-gold-700 underline focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 rounded">polityk¹ prywatnoœci</a> <span class="text-red-500">*</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button 
+                            type="submit"
+                            disabled="@isSubmitting"
+                            class="w-full px-8 py-4 bg-gold-500 text-gray-900 font-semibold rounded-lg hover:bg-gold-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gold-500/50 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation">
+                            @if (isSubmitting)
+                            {
+                                <span class="flex items-center justify-center">
+                                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    Wysy³anie...
+                                </span>
+                            }
+                            else
+                            {
+                                <span>Wyœlij wiadomoœæ</span>
+                            }
+                        </button>
+                    </div>
+                </form>
                 
-                <!-- Map -->
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-                    <div id="contact-map" class="w-full h-full min-h-[600px]" role="region" aria-label="Mapa z lokalizacj¹ naszego biura">
-                        <div class="h-full flex items-center justify-center bg-gray-100">
-                            <div class="text-center p-8">
-                                <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                @if (!string.IsNullOrEmpty(submitMessage))
+                {
+                    <div class="mt-6 p-4 @(submitSuccess ? "bg-green-50 text-green-800 border-green-200" : "bg-red-50 text-red-800 border-red-200") border-2 rounded-lg" role="alert">
+                        <div class="flex items-start">
+                            @if (submitSuccess)
+                            {
+                                <svg class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
-                                <p class="text-gray-600 font-medium mb-2">Nasze Biuro w Warszawie</p>
-                                <p class="text-sm text-gray-500">ul. Przyk³adowa 123, 00-001 Warszawa</p>
-                            </div>
+                            }
+                            else
+                            {
+                                <svg class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            }
+                            <p class="font-medium">@submitMessage</p>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     </div>
@@ -301,45 +281,6 @@
     </div>
 </section>
 
-<!-- Leaflet Map Script -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-<script>
-    window.initializeContactMap = function() {
-        if (document.getElementById('contact-map') && typeof L !== 'undefined') {
-            // Warsaw coordinates
-            const lat = 52.2297;
-            const lng = 21.0122;
-            
-            const map = L.map('contact-map').setView([lat, lng], 16);
-            
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap contributors',
-                maxZoom: 19
-            }).addTo(map);
-            
-            // Add marker for office location
-            const marker = L.marker([lat, lng]).addTo(map);
-            marker.bindPopup(`
-                <div class="p-3">
-                    <h4 class="font-bold text-lg mb-2">BetonoweZloto.pl</h4>
-                    <p class="text-sm text-gray-600 mb-1">ul. Przyk³adowa 123</p>
-                    <p class="text-sm text-gray-600 mb-2">00-001 Warszawa</p>
-                    <a href="https://www.google.com/maps/search/?api=1&query=${lat},${lng}" 
-                       target="_blank" 
-                       class="text-gold-600 hover:text-gold-700 font-semibold text-sm">
-                        Otwórz w Google Maps ?
-                    </a>
-                </div>
-            `).openPopup();
-            
-            return true;
-        }
-        return false;
-    };
-</script>
-
 @code {
     private class ContactFormData
     {
@@ -356,15 +297,6 @@
     private bool isSubmitting = false;
     private string submitMessage = "";
     private bool submitSuccess = false;
-    
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await Task.Delay(100);
-            await JSRuntime.InvokeVoidAsync("initializeContactMap");
-        }
-    }
     
     private string GetFieldErrorClass(string fieldName)
     {
