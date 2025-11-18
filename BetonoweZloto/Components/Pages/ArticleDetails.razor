@@ -134,33 +134,6 @@ else
                     </div>
                 </div>
 
-                <!-- Share Section -->
-                <div class="mt-12 pt-8 border-t border-gray-200">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">Udostêpnij artyku³</h3>
-                    <div class="flex gap-4">
-                        <button @onclick="@(() => ShareArticle("facebook"))" 
-                                class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-600/50">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                            </svg>
-                            Facebook
-                        </button>
-                        <button @onclick="@(() => ShareArticle("twitter"))" 
-                                class="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                            </svg>
-                            Twitter
-                        </button>
-                        <button @onclick="@(() => ShareArticle("linkedin"))" 
-                                class="flex items-center gap-2 px-6 py-3 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors font-semibold focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-700/50">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                            </svg>
-                            LinkedIn
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     </article>
@@ -271,115 +244,49 @@ else
                 Tags = new List<string> { "kupno", "mieszkanie", "porady", "kredyt", "pierwszemieszkanie" },
                 Content = new List<ContentSection>
                 {
-                    new ContentSection { Type = "paragraph", Text = "Kupno pierwszego mieszkania to jeden z najwa¿niejszych momentów w ¿yciu. To inwestycja, która wymaga starannego przemyœlenia i przygotowania. W tym artykule przedstawiamy kompleksowy przewodnik, który pomo¿e Ci przejœæ przez ca³y proces zakupu bez stresu." },
-                    new ContentSection { Type = "heading", Text = "1. Okreœl swój bud¿et" },
-                    new ContentSection { Type = "paragraph", Text = "Zanim zaczniesz szukaæ mieszkania, musisz dok³adnie okreœliæ, ile mo¿esz wydaæ. WeŸ pod uwagê nie tylko cenê nieruchomoœci, ale równie¿ koszty dodatkowe takie jak podatek od czynnoœci cywilnoprawnych, op³aty notarialne, wykoñczenie i ewentualne remonty." },
-                    new ContentSection { Type = "quote", Text = "Pamiêtaj, ¿e koszt mieszkania to nie tylko jego cena - do bud¿etu musisz doliczyæ równie¿ podatki, op³aty notarialne i koszty wykoñczenia." },
-                    new ContentSection { Type = "heading", Text = "2. SprawdŸ swoj¹ zdolnoœæ kredytow¹" },
-                    new ContentSection { Type = "paragraph", Text = "Jeœli planujesz skorzystaæ z kredytu hipotecznego, odwiedŸ kilka banków i sprawdŸ swoj¹ zdolnoœæ kredytow¹. Porównaj oferty ró¿nych instytucji finansowych - ró¿nice w oprocentowaniu mog¹ byæ znacz¹ce." },
-                    new ContentSection { Type = "heading", Text = "3. Wybierz odpowiedni¹ lokalizacjê" },
-                    new ContentSection { Type = "paragraph", Text = "Lokalizacja to klucz! Zastanów siê, co jest dla Ciebie najwa¿niejsze: bliskoœæ miejsca pracy, szko³y, komunikacja miejska, infrastruktura okoliczna. Pamiêtaj, ¿e dobrze dobrana lokalizacja to tak¿e œwietna inwestycja d³ugoterminowa." },
-                    new ContentSection { Type = "list", Items = new List<string> 
-                    { 
-                        "Dostêp do komunikacji miejskiej",
-                        "Bliskoœæ szkó³ i przedszkoli (jeœli masz dzieci)",
-                        "Infrastruktura handlowo-us³ugowa w okolicy",
-                        "Tereny zielone i miejsca rekreacji",
-                        "Bezpieczeñstwo dzielnicy"
-                    }},
-                    new ContentSection { Type = "heading", Text = "4. Ustal swoje wymagania" },
-                    new ContentSection { Type = "paragraph", Text = "Stwórz listê swoich wymagañ i priorytetów. Podziel je na te, które s¹ absolutnie niezbêdne (must-have) i te, które by³yby mi³ym dodatkiem (nice-to-have). To pomo¿e Ci w podejmowaniu decyzji podczas ogl¹dania mieszkañ." },
-                    new ContentSection { Type = "heading", Text = "5. Zbierz niezbêdne dokumenty" },
-                    new ContentSection { Type = "paragraph", Text = "Przygotuj wszystkie dokumenty potrzebne do wziêcia kredytu: zaœwiadczenie o dochodach, PIT, historiê zatrudnienia. Im wczeœniej to zrobisz, tym szybciej bêdziesz móg³ sfinalizowaæ transakcjê, gdy znajdziesz wymarzoneemieszk anie." },
-                    new ContentSection { Type = "heading", Text = "Podsumowanie" },
-                    new ContentSection { Type = "paragraph", Text = "Kupno pierwszego mieszkania to wielki krok, ale przy odpowiednim przygotowaniu mo¿e byæ przyjemnym doœwiadczeniem. Pamiêtaj, aby nie spieszyæ siê z decyzj¹ i dok³adnie przemyœleæ wszystkie aspekty zakupu. Jeœli potrzebujesz pomocy, nasz zespó³ ekspertów jest zawsze do Twojej dyspozycji!" }
+                    new ContentSection { Type = "paragraph", Text = "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi pretium tellus duis convallis tempus leo eu aenean sed diam urna tempor pulvinar vivamus fringilla lacus nec metus bibendum egestas iaculis massa nisl malesuada lacinia integer nunc posuere ut hendrerit semper vel class aptent taciti sociosqu ad litora torquent per conubia nostra inceptos himenaeos orci varius natoque penatibus et magnis dis parturient montes nascetur ridiculus mus donec rhoncus eros lobortis nulla molestie mattis scelerisque maximus eget fermentum odio phasellus non purus est efficitur laoreet mauris pharetra vestibulum fusce dictum risus blandit quis suspendisse aliquet nisi sodales consequat magna ante condimentum neque at luctus nibh finibus facilisis dapibus etiam interdum tortor ligula congue sollicitudin erat viverra ac tincidunt nam porta elementum a enim euismod quam justo lectus commodo augue arcu dignissim velit aliquam imperdiet mollis nullam volutpat porttitor ullamcorper rutrum gravida cras eleifend turpis fames primis vulputate ornare sagittis vehicula praesent dui felis venenatis ultrices proin libero feugiat tristique accumsan maecenas potenti ultricies habitant morbi senectus netus suscipit auctor curabitur facilisi cubilia curae hac habitasse platea dictumst lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque." },
                 }
             },
             new ArticleDetail
             {
                 Id = 2,
                 Title = "Jak Przygotowaæ Mieszkanie do Sprzeda¿y?",
-                Excerpt = "Praktyczne wskazówki, jak zwiêkszyæ wartoœæ nieruchomoœci przed wystawieniem jej na sprzeda¿. Home staging i drobne remonty, które siê op³acaj¹.",
+                Excerpt = "Praktyczne wskazówki, jak zwiêkszyæ wartoœæ nieruchomoœci przed wystawieniem jej na sprzeda¿.",
                 Category = "Sprzeda¿",
                 Date = new DateTime(2024, 1, 10),
                 ReadTime = 6,
                 Views = 892,
                 ImageUrl = "https://images.unsplash.com/photo-1556912173-46c336c7fd55?q=80&w=800",
-                Author = "Piotr Nowak",
-                AuthorRole = "Senior Agent",
+                Author = "Jan Nowak",
+                AuthorRole = "Agent nieruchomoœci",
                 AuthorPhoto = "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200",
-                AuthorBio = "Certyfikowany agent nieruchomoœci z 12-letnim doœwiadczeniem. Specjalizuje siê w przygotowaniu nieruchomoœci do sprzeda¿y i technikach home stagingu.",
+                AuthorBio = "Certyfikowany agent nieruchomoœci z 12-letnim doœwiadczeniem. Specjalizuje siê w przygotowaniu nieruchomoœci do sprzeda¿y.",
                 AuthorEmail = "piotr.nowak@betonowezloto.pl",
                 Tags = new List<string> { "sprzeda¿", "homestaging", "remont", "przygotowanie", "wartoœæ" },
                 Content = new List<ContentSection>
                 {
-                    new ContentSection { Type = "paragraph", Text = "Pierwsze wra¿enie ma kluczowe znaczenie przy sprzeda¿y mieszkania. W³aœciwe przygotowanie nieruchomoœci mo¿e znacz¹co zwiêkszyæ jej atrakcyjnoœæ i cenê sprzeda¿y. W tym artykule dowiesz siê, jak profesjonalnie przygotowaæ mieszkanie do prezentacji potencjalnym kupuj¹cym." },
-                    new ContentSection { Type = "heading", Text = "Uporz¹dkowanie i depersonalizacja" },
-                    new ContentSection { Type = "paragraph", Text = "Pierwsze i najwa¿niejsze - pozb¹dŸ siê zbêdnych rzeczy. Mieszkanie powinno byæ przestronne i jasne. Usuñ osobiste zdjêcia, pami¹tki i wszystko, co mo¿e rozpraszaæ uwagê potencjalnych kupuj¹cych." },
-                    new ContentSection { Type = "heading", Text = "Drobne naprawy i malowanie" },
-                    new ContentSection { Type = "paragraph", Text = "Zanim wystawisz mieszkanie na sprzeda¿, wykonaj wszystkie drobne naprawy. Wymieñ zepsute klamki, napraw przeciekaj¹ce krany, pomaluj œciany na neutralne kolory. Te niewielkie inwestycje mog¹ znacz¹co zwiêkszyæ wartoœæ mieszkania." },
-                    new ContentSection { Type = "list", Items = new List<string> 
-                    { 
-                        "Pomaluj œciany na jasne, neutralne kolory",
-                        "Napraw wszystkie widoczne uszkodzenia",
-                        "Wymieñ przestarza³e osprzêt (klamki, kontakty, w³¹czniki)",
-                        "Odœwie¿ fugi w ³azience i kuchni",
-                        "Wymieñ zu¿yte uszczelki w kranach"
-                    }},
-                    new ContentSection { Type = "heading", Text = "Home Staging" },
-                    new ContentSection { Type = "paragraph", Text = "Home staging to sztuka prezentacji nieruchomoœci w najlepszym mo¿liwym œwietle. Odpowiednio dobrane dekoracje, roœliny i oœwietlenie mog¹ ca³kowicie zmieniæ odbiór mieszkania." },
-                    new ContentSection { Type = "quote", Text = "Dobrze wykonany home staging mo¿e zwiêkszyæ cenê sprzeda¿y nawet o 10-15% - inwestycja, która naprawdê siê op³aca!" },
-                    new ContentSection { Type = "heading", Text = "Profesjonalne zdjêcia" },
-                    new ContentSection { Type = "paragraph", Text = "Zainwestuj w profesjonaln¹ sesjê fotograficzn¹. W dzisiejszych czasach wiêkszoœæ potencjalnych kupuj¹cych najpierw przegl¹da oferty online, wiêc wysokiej jakoœci zdjêcia s¹ absolutnie kluczowe." },
-                    new ContentSection { Type = "heading", Text = "Podsumowanie" },
-                    new ContentSection { Type = "paragraph", Text = "Przygotowanie mieszkania do sprzeda¿y wymaga czasu i niewielkich nak³adów finansowych, ale zdecydowanie siê op³aca. Zadbane mieszkanie sprzeda siê szybciej i za lepsz¹ cenê. Jeœli potrzebujesz pomocy w przygotowaniu mieszkania do sprzeda¿y, skontaktuj siê z naszym zespo³em!" }
+                    new ContentSection { Type = "paragraph", Text = "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi pretium tellus duis convallis tempus leo eu aenean sed diam urna tempor pulvinar vivamus fringilla lacus nec metus bibendum egestas iaculis massa nisl malesuada lacinia integer nunc posuere ut hendrerit semper vel class aptent taciti sociosqu ad litora torquent per conubia nostra inceptos himenaeos orci varius natoque penatibus et magnis dis parturient montes nascetur ridiculus mus donec rhoncus eros lobortis nulla molestie mattis scelerisque maximus eget fermentum odio phasellus non purus est efficitur laoreet mauris pharetra vestibulum fusce dictum risus blandit quis suspendisse aliquet nisi sodales consequat magna ante condimentum neque at luctus nibh finibus facilisis dapibus etiam interdum tortor ligula congue sollicitudin erat viverra ac tincidunt nam porta elementum a enim euismod quam justo lectus commodo augue arcu dignissim velit aliquam imperdiet mollis nullam volutpat porttitor ullamcorper rutrum gravida cras eleifend turpis fames primis vulputate ornare sagittis vehicula praesent dui felis venenatis ultrices proin libero feugiat tristique accumsan maecenas potenti ultricies habitant morbi senectus netus suscipit auctor curabitur facilisi cubilia curae hac habitasse platea dictumst lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque." },
                 }
             },
             new ArticleDetail
             {
                 Id = 3,
-                Title = "Kredyt Hipoteczny - Wszystko, Co Musisz Wiedzieæ",
+                Title = "Kredyt Hipoteczny Wszystko, Co Musisz Wiedzieæ",
                 Excerpt = "Szczegó³owy przewodnik po kredytach hipotecznych w 2024 roku. Rodzaje kredytów, wymagane dokumenty i porady, jak uzyskaæ najlepsze warunki.",
                 Category = "Kredyty",
                 Date = new DateTime(2024, 1, 5),
                 ReadTime = 12,
                 Views = 1523,
                 ImageUrl = "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800",
-                Author = "Magdalena Wójcik",
-                AuthorRole = "Agent",
+                Author = "Sylwia Kowalska",
+                AuthorRole = "Agent nieruchomoœci",
                 AuthorPhoto = "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200",
                 AuthorBio = "Doœwiadczony agent nieruchomoœci specjalizuj¹cy siê w finansowaniu zakupu. Pomaga klientom w uzyskaniu najkorzystniejszych warunków kredytowych.",
                 AuthorEmail = "magdalena.wojcik@betonowezloto.pl",
                 Tags = new List<string> { "kredyt", "hipoteka", "finansowanie", "bank", "oprocentowanie" },
                 Content = new List<ContentSection>
                 {
-                    new ContentSection { Type = "paragraph", Text = "Kredyt hipoteczny to dla wiêkszoœci z nas jedyna mo¿liwoœæ zakupu w³asnego mieszkania. W tym obszernym przewodniku znajdziesz wszystkie najwa¿niejsze informacje, które pomog¹ Ci zrozumieæ proces kredytowy i wybraæ najlepsz¹ ofertê dla siebie." },
-                    new ContentSection { Type = "heading", Text = "Rodzaje kredytów hipotecznych" },
-                    new ContentSection { Type = "paragraph", Text = "Na polskim rynku dostêpne s¹ g³ównie dwa typy kredytów: ze sta³ym i zmiennym oprocentowaniem. Ka¿dy z nich ma swoje zalety i wady, które warto dok³adnie rozwa¿yæ przed podjêciem decyzji." },
-                    new ContentSection { Type = "list", Items = new List<string> 
-                    { 
-                        "Kredyt ze sta³ym oprocentowaniem - przewidywalne raty przez okreœlony czas",
-                        "Kredyt ze zmiennym oprocentowaniem - ni¿sze pocz¹tkowe oprocentowanie, ale ryzyko wzrostu rat",
-                        "Kredyt mieszany - ³¹czy zalety obu rozwi¹zañ"
-                    }},
-                    new ContentSection { Type = "heading", Text = "Wymagane dokumenty" },
-                    new ContentSection { Type = "paragraph", Text = "Aby uzyskaæ kredyt hipoteczny, musisz przygotowaæ odpowiedni¹ dokumentacjê. Lista mo¿e siê ró¿niæ w zale¿noœci od banku, ale podstawowe dokumenty to:" },
-                    new ContentSection { Type = "list", Items = new List<string> 
-                    { 
-                        "Dowód osobisty",
-                        "Zaœwiadczenie o dochodach",
-                        "Umowa o pracê lub dzia³alnoœæ gospodarcz¹",
-                        "Zeznanie podatkowe (PIT)",
-                        "Wyci¹gi z konta bankowego",
-                        "Dokumenty dotycz¹ce nieruchomoœci"
-                    }},
-                    new ContentSection { Type = "heading", Text = "Zdolnoœæ kredytowa" },
-                    new ContentSection { Type = "paragraph", Text = "Zdolnoœæ kredytowa to maksymalna kwota, jak¹ bank mo¿e Ci po¿yczyæ. Zale¿y ona od Twoich dochodów, wydatków, liczby osób na utrzymaniu i innych zobowi¹zañ finansowych." },
-                    new ContentSection { Type = "quote", Text = "Wk³ad w³asny to nie wszystko - bank sprawdzi równie¿ historiê Twojej zdolnoœci kredytowej i stabilnoœæ zatrudnienia." },
-                    new ContentSection { Type = "heading", Text = "Jak uzyskaæ najlepsze warunki?" },
-                    new ContentSection { Type = "paragraph", Text = "Porównaj oferty kilku banków, negocjuj warunki i nie bój siê pytaæ o dodatkowe korzyœci. Czasem bank mo¿e obni¿yæ mar¿ê lub zaoferowaæ darmowe ubezpieczenie." },
-                    new ContentSection { Type = "heading", Text = "Podsumowanie" },
-                    new ContentSection { Type = "paragraph", Text = "Kredyt hipoteczny to d³ugoletnie zobowi¹zanie, wiêc warto poœwiêciæ czas na dok³adne zapoznanie siê z ofertami i warunkami. Pamiêtaj, ¿e najni¿sze oprocentowanie to nie wszystko - zwróæ uwagê równie¿ na elastycznoœæ kredytu i dodatkowe koszty." }
+                    new ContentSection { Type = "paragraph", Text = "Lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque sem placerat in id cursus mi pretium tellus duis convallis tempus leo eu aenean sed diam urna tempor pulvinar vivamus fringilla lacus nec metus bibendum egestas iaculis massa nisl malesuada lacinia integer nunc posuere ut hendrerit semper vel class aptent taciti sociosqu ad litora torquent per conubia nostra inceptos himenaeos orci varius natoque penatibus et magnis dis parturient montes nascetur ridiculus mus donec rhoncus eros lobortis nulla molestie mattis scelerisque maximus eget fermentum odio phasellus non purus est efficitur laoreet mauris pharetra vestibulum fusce dictum risus blandit quis suspendisse aliquet nisi sodales consequat magna ante condimentum neque at luctus nibh finibus facilisis dapibus etiam interdum tortor ligula congue sollicitudin erat viverra ac tincidunt nam porta elementum a enim euismod quam justo lectus commodo augue arcu dignissim velit aliquam imperdiet mollis nullam volutpat porttitor ullamcorper rutrum gravida cras eleifend turpis fames primis vulputate ornare sagittis vehicula praesent dui felis venenatis ultrices proin libero feugiat tristique accumsan maecenas potenti ultricies habitant morbi senectus netus suscipit auctor curabitur facilisi cubilia curae hac habitasse platea dictumst lorem ipsum dolor sit amet consectetur adipiscing elit quisque faucibus ex sapien vitae pellentesque." },
                 }
             }
         };

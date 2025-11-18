@@ -82,7 +82,7 @@ else
                     <!-- Key Features -->
                     <div class="bg-white rounded-2xl shadow-lg p-8">
                         <h2 class="text-3xl font-bold text-gray-900 mb-6">Kluczowe Informacje</h2>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
                             <div class="text-center p-4 bg-gray-50 rounded-xl">
                                 <svg class="w-10 h-10 mx-auto mb-3 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
@@ -97,13 +97,13 @@ else
                                 <div class="text-2xl font-bold text-gray-900">@Property.Rooms</div>
                                 <div class="text-sm text-gray-600">pokoje</div>
                             </div>
-                            <div class="text-center p-4 bg-gray-50 rounded-xl">
+@*                             <div class="text-center p-4 bg-gray-50 rounded-xl">
                                 <svg class="w-10 h-10 mx-auto mb-3 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                                 </svg>
                                 <div class="text-2xl font-bold text-gray-900">@Property.Floor</div>
                                 <div class="text-sm text-gray-600">piêtro</div>
-                            </div>
+                            </div> *@
                             <div class="text-center p-4 bg-gray-50 rounded-xl">
                                 <svg class="w-10 h-10 mx-auto mb-3 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -164,13 +164,6 @@ else
                                     Wyœlij Email
                                 </a>
 
-                                <button @onclick="ShareProperty"
-                                        class="flex items-center justify-center w-full px-6 py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg font-bold hover:bg-white/20 transition-all border-2 border-white/30">
-                                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
-                                    </svg>
-                                    Udostêpnij
-                                </button>
                             </div>
 
                             <div class="mt-6 pt-6 border-t border-white/20 text-center">
@@ -234,7 +227,7 @@ else
         public decimal Price { get; set; }
         public int Area { get; set; }
         public int Rooms { get; set; }
-        public int Floor { get; set; }
+        // public int Floor { get; set; }
         public int YearBuilt { get; set; }
         public string ImageUrl { get; set; } = "";
         public string Description { get; set; } = "";
@@ -256,17 +249,16 @@ else
             new PropertyDetail
             {
                 Id = 1,
-                Title = "Nowoczesne Mieszkanie w Centrum",
+                Title = "Nowoczesne Mieszkanie",
                 Location = "Warszawa, Œródmieœcie",
                 City = "Warszawa",
                 Type = "Mieszkanie",
                 Price = 890000,
                 Area = 65,
                 Rooms = 3,
-                Floor = 5,
                 YearBuilt = 2020,
                 ImageUrl = "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800",
-                Description = "Wyj¹tkowe mieszkanie w presti¿owej lokalizacji centrum Warszawy. Nieruchomoœæ znajduje siê w nowoczesnym budynku z 2020 roku, wyposa¿onym w windê i monitoring. Mieszkanie zosta³o wykoñczone z najwy¿sz¹ starannoœci¹ przy u¿yciu materia³ów najwy¿szej jakoœci. Du¿e okna zapewniaj¹ doskona³e doœwietlenie wszystkich pomieszczeñ. Idealne dla rodziny lub jako inwestycja pod wynajem.",
+                Description = "Wyj¹tkowe mieszkanie w presti¿owej lokalizacji centrum Warszawy. Nieruchomoœæ znajduje siê w nowoczesnym budynku z 2020 roku, wyposa¿onym w windê i monitoring.",
                 Features = new List<string>
                 {
                     "Balkon 8m?",
@@ -275,10 +267,6 @@ else
                     "Klimatyzacja",
                     "Ogrzewanie pod³ogowe",
                     "Winda",
-                    "Domofon z kamer¹",
-                    "Antyw³amaniowe drzwi",
-                    "Rolety zewnêtrzne",
-                    "W pe³ni wyposa¿ona kuchnia"
                 },
                 AddedDate = DateTime.Now.AddDays(-15),
                 Views = 342
@@ -286,30 +274,24 @@ else
             new PropertyDetail
             {
                 Id = 2,
-                Title = "Przestronny Dom z Ogrodem",
+                Title = "Dom z Ogrodem",
                 Location = "Kraków, Bronowice",
                 City = "Kraków",
                 Type = "Dom",
                 Price = 1450000,
                 Area = 180,
                 Rooms = 5,
-                Floor = 2,
                 YearBuilt = 2018,
                 ImageUrl = "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=800",
-                Description = "Piêkny, wolnostoj¹cy dom w spokojnej okolicy Bronowic. Nieruchomoœæ o powierzchni 180m? usytuowana na dzia³ce 800m?. Dom w doskona³ym stanie technicznym, gotowy do zamieszkania. Przestronna kuchnia po³¹czona z jadalni¹, du¿y salon z wyjœciem na taras. Na piêtrze cztery sypialnie i dwie ³azienki. Ogród z automatycznym systemem nawadniania.",
+                Description = "Piêkny, wolnostoj¹cy dom w spokojnej okolicy Bronowic. Nieruchomoœæ o powierzchni 180m? usytuowana na dzia³ce 800m?.",
                 Features = new List<string>
                 {
                     "Dzia³ka 800m?",
                     "Gara¿ na 2 samochody",
-                    "Taras 40m?",
                     "Ogród",
-                    "Grill murowany",
                     "Alarm",
                     "Monitoring",
-                    "Kot³ownia gazowa",
-                    "Rekuperacja",
                     "System Smart Home",
-                    "Ogrodzenie posesji"
                 },
                 AddedDate = DateTime.Now.AddDays(-8),
                 Views = 567
@@ -317,26 +299,21 @@ else
             new PropertyDetail
             {
                 Id = 3,
-                Title = "Apartament z Widokiem na Morze",
+                Title = "Apartament",
                 Location = "Gdañsk, Przymorze",
                 City = "Gdañsk",
                 Type = "Mieszkanie",
                 Price = 720000,
                 Area = 52,
                 Rooms = 2,
-                Floor = 12,
                 YearBuilt = 2019,
                 ImageUrl = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800",
-                Description = "Ekskluzywny apartament na 12 piêtrze z przepiêknym widokiem na Zatokê Gdañsk¹. Nieruchomoœæ w doskona³ym standardzie, jasna i s³oneczna. Du¿y balkon idealny na relaks z widokiem na morze. Budynek z ca³odobow¹ ochron¹ i recepcj¹. W pobli¿u pla¿a, marina i liczne restauracje. Doskona³a lokalizacja komunikacyjna.",
+                Description = "Ekskluzywny apartament na 12 piêtrze z przepiêknym widokiem na Zatokê Gdañsk¹. Nieruchomoœæ w doskona³ym standardzie, jasna i s³oneczna. Du¿y balkon idealny na relaks z widokiem na morze.",
                 Features = new List<string>
                 {
                     "Widok na morze",
-                    "Balkon 6m?",
                     "Miejsce parkingowe",
-                    "Recepcja 24h",
-                    "Ochrona",
                     "Klimatyzacja",
-                    "Winda",
                     "Bliskoœæ pla¿y",
                     "Nowoczesna zabudowa kuchenna"
                 },
@@ -346,30 +323,23 @@ else
             new PropertyDetail
             {
                 Id = 4,
-                Title = "Luksusowy Penthouse",
-                Location = "Wroc³aw, Stare Miasto",
+                Title = "Penthouse",
+                Location = "Wroc³aw, Psie Pole",
                 City = "Wroc³aw",
                 Type = "Mieszkanie",
                 Price = 2100000,
                 Area = 120,
-                Rooms = 4,
-                Floor = 8,
+                Rooms = 8,
                 YearBuilt = 2021,
                 ImageUrl = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800",
-                Description = "Wyj¹tkowy penthouse w sercu Starego Miasta we Wroc³awiu. Apartament na ostatnim piêtrze presti¿owego budynku z 2021 roku. Ogromny taras widokowy z widokiem na panoramê miasta. Luksusowe wykoñczenie premium, designer furniture. System klimatyzacji i inteligentnego zarz¹dzania domem. Dwa miejsca parkingowe w gara¿u podziemnym.",
+                Description = "Wyj¹tkowy penthouse w sercu Starego Miasta we Wroc³awiu. Apartament na ostatnim piêtrze presti¿owego budynku z 2021 roku. Ogromny taras widokowy z widokiem na panoramê miasta.",
                 Features = new List<string>
                 {
                     "Taras 80m?",
-                    "Widok na Stare Miasto",
                     "2 miejsca parkingowe",
-                    "Komórka lokatorska",
-                    "Klimatyzacja multi-split",
+                    "Klimatyzacja",
                     "Ogrzewanie pod³ogowe",
                     "System Smart Home",
-                    "Alarm",
-                    "Meble premium",
-                    "Sauna prywatna",
-                    "Jacuzzi na tarasie"
                 },
                 AddedDate = DateTime.Now.AddDays(-5),
                 Views = 1234
@@ -377,17 +347,16 @@ else
             new PropertyDetail
             {
                 Id = 5,
-                Title = "Kameralne Mieszkanie dla Singla",
+                Title = "Kameralne Mieszkanie",
                 Location = "Poznañ, Je¿yce",
                 City = "Poznañ",
                 Type = "Mieszkanie",
                 Price = 420000,
                 Area = 38,
                 Rooms = 2,
-                Floor = 3,
                 YearBuilt = 2017,
                 ImageUrl = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=800",
-                Description = "Przytulne, funkcjonalne mieszkanie w modnej dzielnicy Je¿yce. Idealne dla singla lub pary. Niedawno wyremontowane, w pe³ni umeblowane i wyposa¿one. Œwietna lokalizacja - blisko uczelni, centrum miasta, liczne kawiarnie i restauracje w okolicy. Niskie koszty utrzymania.",
+                Description = "Przytulne, funkcjonalne mieszkanie w modnej dzielnicy Je¿yce. Idealne dla singla lub pary. Niedawno wyremontowane, w pe³ni umeblowane i wyposa¿one.",
                 Features = new List<string>
                 {
                     "Balkon 4m?",
@@ -405,17 +374,16 @@ else
             new PropertyDetail
             {
                 Id = 6,
-                Title = "Rodzinny Dom z Tarasem",
+                Title = "Dom z Tarasem",
                 Location = "Katowice, Ligota",
                 City = "Katowice",
                 Type = "Dom",
                 Price = 980000,
                 Area = 145,
                 Rooms = 4,
-                Floor = 2,
                 YearBuilt = 2016,
                 ImageUrl = "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=800",
-                Description = "Komfortowy dom w zabudowie bliŸniaczej w spokojnej czêœci Ligoty. Doskona³a lokalizacja - blisko szko³y, przedszkola i terenów zielonych. Dom w bardzo dobrym stanie, z zadbanych ogrodem. Przestronny salon z kominkiem, nowoczesna kuchnia, na piêtrze trzy sypialnie. Idealny dla rodziny z dzieæmi.",
+                Description = "Komfortowy dom w zabudowie bliŸniaczej w spokojnej czêœci dzielnicy.",
                 Features = new List<string>
                 {
                     "Dzia³ka 350m?",
@@ -435,17 +403,16 @@ else
             new PropertyDetail
             {
                 Id = 7,
-                Title = "Lokal Biurowy Klasy A",
+                Title = "Lokal Biurowy",
                 Location = "Warszawa, Mokotów",
                 City = "Warszawa",
                 Type = "Lokal",
                 Price = 650000,
                 Area = 80,
                 Rooms = 3,
-                Floor = 4,
                 YearBuilt = 2019,
                 ImageUrl = "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800",
-                Description = "Reprezentacyjny lokal biurowy w nowoczesnym biurowcu klasy A na Mokotowie. Przestronny open space z mo¿liwoœci¹ aran¿acji wed³ug w³asnych potrzeb. Wysoki standard wykoñczenia, klimatyzacja, dostêp do serwerowni. W budynku recepcja, ochrona 24h, parking podziemny. Doskona³a lokalizacja biznesowa.",
+                Description = "Reprezentacyjny lokal biurowy w nowoczesnym biurowcu na Mokotowie. Wysoki standard wykoñczenia, klimatyzacja. W budynku recepcja, ochrona 24h, parking podziemny. Doskona³a lokalizacja biznesowa.",
                 Features = new List<string>
                 {
                     "Klimatyzacja",
@@ -453,9 +420,6 @@ else
                     "Ochrona 24h",
                     "Parking podziemny",
                     "Winda",
-                    "Internet szerokopasmowy",
-                    "System kontroli dostêpu",
-                    "Aneks kuchenny",
                     "Œwietna lokalizacja",
                     "Blisko metro"
                 },
@@ -465,17 +429,16 @@ else
             new PropertyDetail
             {
                 Id = 8,
-                Title = "Rezydencja pod Lasem",
+                Title = "Rezydencja",
                 Location = "Gdynia, Or³owo",
                 City = "Gdynia",
                 Type = "Dom",
                 Price = 2300000,
                 Area = 220,
                 Rooms = 6,
-                Floor = 2,
                 YearBuilt = 2022,
                 ImageUrl = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800",
-                Description = "Luksusowa rezydencja w ekskluzywnej lokalizacji Or³owa. Dom wybudowany w 2022 roku w najwy¿szym standardzie. Nowoczesna architektura ³¹cz¹ca funkcjonalnoœæ z estetyk¹. Ogromne przeszklenia zapewniaj¹ce doskona³e doœwietlenie. Przestronny salon z kominkiem, piêæ sypialni, trzy ³azienki. Dzia³ka z basenem i ogrodem. W pobli¿u las i klif nadmorski.",
+                Description = "Luksusowa rezydencja w ekskluzywnej lokalizacji Or³owa. Dom wybudowany w 2022 roku w najwy¿szym standardzie.",
                 Features = new List<string>
                 {
                     "Dzia³ka 1200m?",
@@ -483,9 +446,7 @@ else
                     "Gara¿ na 3 samochody",
                     "Sauna",
                     "Si³ownia",
-                    "Taras 60m?",
                     "Kominek",
-                    "Rekuperacja",
                     "Fotowoltaika",
                     "System Smart Home",
                     "Monitoring",
