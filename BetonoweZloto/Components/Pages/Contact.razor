@@ -2,7 +2,6 @@
 
 <PageTitle>Kontakt - BetonoweZloto.pl</PageTitle>
 
-<!-- Hero Section -->
 <section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white py-20">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
@@ -16,11 +15,9 @@
     </div>
 </section>
 
-<!-- Contact Methods -->
 <section class="py-12 bg-white">
     <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Phone -->
             <div class="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-8 h-8 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -34,7 +31,6 @@
                 <p class="text-sm text-gray-600 mt-2">Pon-Pt: 9:00-18:00<br/>Sob: 10:00-14:00</p>
             </div>
             
-            <!-- Email -->
             <div class="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-8 h-8 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -48,7 +44,6 @@
                 <p class="text-sm text-gray-600 mt-2">Odpowiadamy w ci¹gu 24h</p>
             </div>
             
-            <!-- Address -->
             <div class="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-lg transition-shadow">
                 <div class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-8 h-8 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -67,16 +62,13 @@
     </div>
 </section>
 
-<!-- Contact Form -->
 <section class="py-12 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto">
-            <!-- Contact Form -->
             <div class="bg-white rounded-2xl shadow-lg p-8">
                 <h2 class="text-3xl font-bold text-gray-900 mb-6">Wyœlij Wiadomoœæ</h2>
                 <form @onsubmit="HandleSubmit" @onsubmit:preventDefault>
                     <div class="space-y-6">
-                        <!-- Name -->
                         <div>
                             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
                                 Imiê i nazwisko <span class="text-red-500">*</span>
@@ -97,7 +89,6 @@
                             }
                         </div>
                         
-                        <!-- Email -->
                         <div>
                             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
                                 E-mail <span class="text-red-500">*</span>
@@ -118,7 +109,6 @@
                             }
                         </div>
                         
-                        <!-- Phone -->
                         <div>
                             <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
                                 Telefon <span class="text-red-500">*</span>
@@ -139,7 +129,6 @@
                             }
                         </div>
                         
-                        <!-- Subject -->
                         <div>
                             <label for="subject" class="block text-sm font-semibold text-gray-700 mb-2">
                                 Temat <span class="text-red-500">*</span>
@@ -159,7 +148,6 @@
                             </select>
                         </div>
                         
-                        <!-- Message -->
                         <div>
                             <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">
                                 Wiadomoœæ <span class="text-red-500">*</span>
@@ -180,7 +168,6 @@
                             }
                         </div>
                         
-                        <!-- GDPR Consent -->
                         <div class="flex items-start">
                             <input 
                                 type="checkbox" 
@@ -194,7 +181,6 @@
                             </label>
                         </div>
                         
-                        <!-- Submit Button -->
                         <button 
                             type="submit"
                             disabled="@isSubmitting"
@@ -242,7 +228,6 @@
     </div>
 </section>
 
-<!-- Social Media Integration -->
 <section class="py-20 bg-white">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">

@@ -2,18 +2,15 @@
 
 <PageTitle>BetonoweZłoto.pl - Profesjonalne Biuro Obrotu Nieruchomościami</PageTitle>
 
-<!-- Hero Section with Image Slider -->
 <section class="relative h-[90vh] min-h-[600px] overflow-hidden" role="region" aria-label="Główny baner">
     <div class="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/40 z-10"></div>
     
-    <!-- Background Image -->
     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" 
          style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2000');"
          role="img"
          aria-label="Nowoczesny dom z dużymi oknami">
     </div>
     
-    <!-- Hero Content -->
     <div class="relative z-20 container mx-auto px-4 h-full flex items-center">
         <div class="max-w-3xl text-white">
             <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
@@ -41,7 +38,6 @@
         </div>
     </div>
     
-    <!-- Scroll Indicator -->
     <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
         <a href="#o-nas" class="text-white/80 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 rounded-full p-2" aria-label="Przewiń w dół">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -51,7 +47,6 @@
     </div>
 </section>
 
-<!-- About Section -->
 <section id="o-nas" class="py-20 bg-gray-50" role="region" aria-labelledby="about-heading">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center mb-16">
@@ -64,9 +59,7 @@
             </p>
         </div>
         
-        <!-- Features Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <!-- Feature 1 -->
             <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mb-6">
                     <svg class="w-8 h-8 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -80,7 +73,6 @@
                 </p>
             </div>
             
-            <!-- Feature 2 -->
             <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mb-6">
                     <svg class="w-8 h-8 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -94,7 +86,6 @@
                 </p>
             </div>
             
-            <!-- Feature 3 -->
             <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <div class="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mb-6">
                     <svg class="w-8 h-8 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -111,7 +102,6 @@
     </div>
 </section>
 
-<!-- Featured Properties Section -->
 <section id="oferty" class="py-20 bg-white" role="region" aria-labelledby="properties-heading">
     <div class="container mx-auto px-4">
         <div class="text-center mb-16">
@@ -123,7 +113,6 @@
             </p>
         </div>
         
-        <!-- Properties Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             @foreach (var property in FeaturedProperties)
             {
@@ -185,7 +174,6 @@
     </div>
 </section>
 
-<!-- CTA Section -->
 <section id="kontakt" class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white" role="region" aria-labelledby="cta-heading">
     <div class="container mx-auto px-4 text-center">
         <h2 id="cta-heading" class="text-4xl md:text-5xl font-bold mb-6">

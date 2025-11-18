@@ -4,7 +4,6 @@
 
 <PageTitle>Wyszukiwarka Ofert - BetonoweZloto.pl</PageTitle>
 
-<!-- Header -->
 <div class="bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white py-20">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
@@ -16,14 +15,11 @@
 
 <div class="container mx-auto px-4 py-12">
     <div class="flex flex-col lg:flex-row gap-8">
-
-        <!-- Filters Sidebar -->
         <aside class="w-full lg:w-1/4">
             <div class="bg-white p-6 rounded-xl shadow-lg sticky top-24 border border-gray-100">
                 <h2 class="text-xl font-bold mb-6 pb-2 border-b border-gray-200">Filtry</h2>
 
                 <div class="space-y-6">
-                    <!-- Search Text -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Lokalizacja lub słowo kluczowe</label>
                         <div class="relative">
@@ -39,7 +35,6 @@
                         </div>
                     </div>
 
-                    <!-- Type -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Typ nieruchomości</label>
                         <select @bind="SelectedType" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gold-500 outline-none cursor-pointer">
@@ -50,7 +45,6 @@
                         </select>
                     </div>
 
-                    <!-- Price Range -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Cena maksymalna (zł)</label>
                         <input @bind="MaxPrice"
@@ -59,7 +53,6 @@
                                placeholder="Bez limitu" />
                     </div>
 
-                    <!-- Rooms -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Liczba pokoi (dokładnie)</label>
                         <div class="flex gap-2">
@@ -79,7 +72,6 @@
                         </div>
                     </div>
 
-                    <!-- Filter Button -->
                     <button @onclick="FilterProperties"
                             class="w-full bg-gray-900 text-white py-3 rounded-lg font-bold hover:bg-gold-600 transition-all shadow-md mt-4 focus:outline-none focus:ring-4 focus:ring-gold-500/50 active:scale-95">
                         Filtruj Wyniki
@@ -92,11 +84,9 @@
             </div>
         </aside>
 
-        <!-- Results Grid -->
         <main class="w-full lg:w-3/4">
             <div class="mb-6 flex justify-between items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                 <p class="text-gray-600">Znaleziono ofert: <span class="font-bold text-gray-900">@FilteredProperties.Count</span></p>
-                <!-- Sortowanie usunięte -->
             </div>
 
             @if (FilteredProperties.Any())
@@ -157,7 +147,6 @@
     </div>
 </div>
 
-<!-- CTA Section -->
 <section id="kontakt" class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white" role="region" aria-labelledby="cta-heading">
     <div class="container mx-auto px-4 text-center">
         <h2 id="cta-heading" class="text-4xl md:text-5xl font-bold mb-6">
@@ -188,34 +177,29 @@
 </section>
 
 @code {
-    // Modele danych
     private class PropertyListing
     {
         public int Id { get; set; }
         public string Title { get; set; } = "";
         public string Location { get; set; } = "";
         public string City { get; set; } = "";
-        public string Type { get; set; } = ""; // Mieszkanie, Dom, Lokal
+        public string Type { get; set; } = "";
         public decimal Price { get; set; }
         public int Area { get; set; }
         public int Rooms { get; set; }
         public string ImageUrl { get; set; } = "";
     }
 
-    // Pola filtrów
     private string SearchQuery { get; set; } = "";
     private string SelectedType { get; set; } = "";
     private decimal? MaxPrice { get; set; }
-    // Zmienna przemianowana dla czytelności z MinRooms na TargetRooms
     private int TargetRooms { get; set; } = 0;
 
-    // Dane
     private List<PropertyListing> AllProperties = new();
     private List<PropertyListing> FilteredProperties = new();
 
     protected override void OnInitialized()
     {
-        // Mock danych
         AllProperties = new List<PropertyListing>
         {
             new PropertyListing { Id = 1, Title = "Nowoczesne Mieszkanie w Centrum", Location = "Warszawa, Śródmieście", City = "Warszawa", Type = "Mieszkanie", Price = 890000, Area = 65, Rooms = 3, ImageUrl = "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800" },
@@ -248,7 +232,6 @@
     {
         var query = AllProperties.AsEnumerable();
 
-        // Filtrowanie po tekście
         if (!string.IsNullOrWhiteSpace(SearchQuery))
         {
             query = query.Where(p =>
@@ -257,19 +240,16 @@
                 p.City.Contains(SearchQuery, StringComparison.OrdinalIgnoreCase));
         }
 
-        // Filtrowanie po typie
         if (!string.IsNullOrEmpty(SelectedType))
         {
             query = query.Where(p => p.Type == SelectedType);
         }
 
-        // Filtrowanie po cenie
         if (MaxPrice.HasValue && MaxPrice.Value > 0)
         {
             query = query.Where(p => p.Price <= MaxPrice.Value);
         }
 
-        // Filtrowanie po liczbie pokoi (dokładna liczba)
         if (TargetRooms > 0)
         {
             query = query.Where(p => p.Rooms == TargetRooms);
