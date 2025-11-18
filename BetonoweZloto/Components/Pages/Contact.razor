@@ -139,7 +139,7 @@
                                 required
                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all appearance-none bg-white cursor-pointer"
                                 aria-required="true">
-                                <option value="">Wybierz temat…</option>
+                                <option value="">Wybierz temat</option>
                                 <option value="buy">Chcê kupiæ nieruchomoœæ</option>
                                 <option value="sell">Chcê sprzedaæ nieruchomoœæ</option>
                                 <option value="rent">Szukam wynajmu</option>
@@ -158,7 +158,7 @@
                                 required
                                 rows="5"
                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all resize-y @(GetFieldErrorClass(nameof(formData.Message)))"
-                                placeholder="Opisz swoje pytanie lub potrzeby…"
+                                placeholder="Opisz swoje pytanie lub potrzeby"
                                 aria-required="true"
                                 aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Message))))"
                                 aria-describedby="@(errors.ContainsKey(nameof(formData.Message)) ? "message-error" : null)"></textarea>
@@ -293,7 +293,6 @@
         errors.Clear();
         submitMessage = "";
         
-        // Validation
         if (string.IsNullOrWhiteSpace(formData.Name))
             errors[nameof(formData.Name)] = "Pole wymagane";
             
@@ -324,18 +323,15 @@
             return;
         }
         
-        // Submit form
         isSubmitting = true;
         StateHasChanged();
         
-        // Simulate API call
         await Task.Delay(1500);
         
         isSubmitting = false;
         submitSuccess = true;
         submitMessage = "Dziêkujemy za wiadomoœæ! Skontaktujemy siê z Tob¹ w ci¹gu 24 godzin.";
         
-        // Reset form
         formData = new ContactFormData();
         StateHasChanged();
     }
