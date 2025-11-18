@@ -1,0 +1,507 @@
+@page "/oferty/{id:int}"
+@using System.Globalization
+@rendermode InteractiveServer
+
+<PageTitle>@Property?.Title - BetonoweZloto.pl</PageTitle>
+
+@if (Property == null)
+{
+    <div class="container mx-auto px-4 py-20 text-center">
+        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Nie znaleziono oferty</h2>
+        <p class="text-gray-600 mb-8">Oferta o podanym identyfikatorze nie istnieje lub zosta³a usuniêta.</p>
+        <a href="/oferty" class="inline-flex items-center px-6 py-3 rounded-lg bg-gold-500 text-gray-900 font-bold hover:bg-gold-400 transition-colors shadow-md">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Powrót do ofert
+        </a>
+    </div>
+}
+else
+{
+    <!-- Breadcrumb -->
+    <nav class="bg-gray-50 border-b border-gray-200" aria-label="Breadcrumb">
+        <div class="container mx-auto px-4 py-4">
+            <ol class="flex items-center space-x-2 text-sm">
+                <li><a href="/" class="text-gray-600 hover:text-gold-600 transition-colors">Start</a></li>
+                <li><svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg></li>
+                <li><a href="/oferty" class="text-gray-600 hover:text-gold-600 transition-colors">Oferty</a></li>
+                <li><svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg></li>
+                <li><span class="text-gray-900 font-medium">@Property.Title</span></li>
+            </ol>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-12">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+                    <div>
+                        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-3">@Property.Title</h1>
+                        <div class="flex items-center text-gray-600 text-lg">
+                            <svg class="w-6 h-6 mr-2 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            @Property.Location
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-4xl md:text-5xl font-bold text-gold-600 mb-2">
+                            @Property.Price.ToString("N0", new CultureInfo("pl-PL")) z³
+                        </div>
+                        <div class="text-gray-600 text-lg">
+                            @((Property.Price / Property.Area).ToString("N0", new CultureInfo("pl-PL"))) z³/m?
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-8">
+                    <!-- Image Gallery -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="aspect-[16/10] relative">
+                            <img src="@Property.ImageUrl" 
+                                 alt="@Property.Title" 
+                                 class="w-full h-full object-cover"
+                                 loading="eager" />
+                            <div class="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-full font-bold text-gray-900 shadow-lg">
+                                @Property.Type
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Key Features -->
+                    <div class="bg-white rounded-2xl shadow-lg p-8">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Kluczowe Informacje</h2>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6">
+                            <div class="text-center p-4 bg-gray-50 rounded-xl">
+                                <svg class="w-10 h-10 mx-auto mb-3 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                                </svg>
+                                <div class="text-2xl font-bold text-gray-900">@Property.Area</div>
+                                <div class="text-sm text-gray-600">m?</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-xl">
+                                <svg class="w-10 h-10 mx-auto mb-3 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                </svg>
+                                <div class="text-2xl font-bold text-gray-900">@Property.Rooms</div>
+                                <div class="text-sm text-gray-600">pokoje</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-xl">
+                                <svg class="w-10 h-10 mx-auto mb-3 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                </svg>
+                                <div class="text-2xl font-bold text-gray-900">@Property.Floor</div>
+                                <div class="text-sm text-gray-600">piêtro</div>
+                            </div>
+                            <div class="text-center p-4 bg-gray-50 rounded-xl">
+                                <svg class="w-10 h-10 mx-auto mb-3 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                                <div class="text-2xl font-bold text-gray-900">@Property.YearBuilt</div>
+                                <div class="text-sm text-gray-600">rok budowy</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="bg-white rounded-2xl shadow-lg p-8">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Opis Nieruchomoœci</h2>
+                        <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
+                            <p>@Property.Description</p>
+                        </div>
+                    </div>
+
+                    <!-- Additional Features -->
+                    <div class="bg-white rounded-2xl shadow-lg p-8">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-6">Dodatkowe Udogodnienia</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            @foreach (var feature in Property.Features)
+                            {
+                                <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                                    <svg class="w-6 h-6 mr-3 text-gold-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span class="text-gray-700">@feature</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="lg:col-span-1">
+                    <div class="sticky top-24 space-y-6">
+                        <!-- Contact Card -->
+                        <div class="bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 rounded-2xl shadow-xl p-8 text-white">
+                            <h3 class="text-2xl font-bold mb-6">Skontaktuj siê z nami</h3>
+                            <p class="text-gray-300 mb-6">Nasi eksperci s¹ gotowi odpowiedzieæ na wszystkie pytania dotycz¹ce tej nieruchomoœci.</p>
+                            
+                            <div class="space-y-4">
+                                <a href="tel:+48123456789" 
+                                   class="flex items-center justify-center w-full px-6 py-4 bg-gold-500 text-gray-900 rounded-lg font-bold hover:bg-gold-400 transition-all shadow-md">
+                                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                    </svg>
+                                    Zadzwoñ
+                                </a>
+                                
+                                <a href="mailto:kontakt@betonowezloto.pl?subject=Zapytanie o nieruchomoœæ: @Property.Title" 
+                                   class="flex items-center justify-center w-full px-6 py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg font-bold hover:bg-white/20 transition-all border-2 border-white/30">
+                                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                    Wyœlij Email
+                                </a>
+
+                                <button @onclick="ShareProperty"
+                                        class="flex items-center justify-center w-full px-6 py-4 bg-white/10 backdrop-blur-sm text-white rounded-lg font-bold hover:bg-white/20 transition-all border-2 border-white/30">
+                                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
+                                    </svg>
+                                    Udostêpnij
+                                </button>
+                            </div>
+
+                            <div class="mt-6 pt-6 border-t border-white/20 text-center">
+                                <p class="text-sm text-gray-300 mb-2">Czas pracy:</p>
+                                <p class="font-semibold">Pn-Pt: 9:00-18:00</p>
+                                <p class="font-semibold">Sob: 10:00-14:00</p>
+                            </div>
+                        </div>
+
+                        <!-- Quick Info -->
+                        <div class="bg-white rounded-2xl shadow-lg p-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Informacje</h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-600">ID oferty:</span>
+                                    <span class="font-semibold text-gray-900">@Property.Id</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-600">Status:</span>
+                                    <span class="font-semibold text-green-600">Dostêpne</span>
+                                </div>
+                                <div class="flex justify-between py-2 border-b border-gray-100">
+                                    <span class="text-gray-600">Data dodania:</span>
+                                    <span class="font-semibold text-gray-900">@Property.AddedDate.ToString("dd.MM.yyyy")</span>
+                                </div>
+                                <div class="flex justify-between py-2">
+                                    <span class="text-gray-600">Ods³on:</span>
+                                    <span class="font-semibold text-gray-900">@Property.Views</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Back Button -->
+                        <a href="/oferty" 
+                           class="flex items-center justify-center w-full px-6 py-3 bg-gray-100 text-gray-900 rounded-lg font-semibold hover:bg-gray-200 transition-colors">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            Powrót do ofert
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private PropertyDetail? Property { get; set; }
+
+    private class PropertyDetail
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = "";
+        public string Location { get; set; } = "";
+        public string City { get; set; } = "";
+        public string Type { get; set; } = "";
+        public decimal Price { get; set; }
+        public int Area { get; set; }
+        public int Rooms { get; set; }
+        public int Floor { get; set; }
+        public int YearBuilt { get; set; }
+        public string ImageUrl { get; set; } = "";
+        public string Description { get; set; } = "";
+        public List<string> Features { get; set; } = new();
+        public DateTime AddedDate { get; set; }
+        public int Views { get; set; }
+    }
+
+    protected override void OnInitialized()
+    {
+        LoadProperty();
+    }
+
+    private void LoadProperty()
+    {
+        // Mock data - w rzeczywistej aplikacji dane pobierane z bazy danych
+        var properties = new List<PropertyDetail>
+        {
+            new PropertyDetail
+            {
+                Id = 1,
+                Title = "Nowoczesne Mieszkanie w Centrum",
+                Location = "Warszawa, Œródmieœcie",
+                City = "Warszawa",
+                Type = "Mieszkanie",
+                Price = 890000,
+                Area = 65,
+                Rooms = 3,
+                Floor = 5,
+                YearBuilt = 2020,
+                ImageUrl = "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800",
+                Description = "Wyj¹tkowe mieszkanie w presti¿owej lokalizacji centrum Warszawy. Nieruchomoœæ znajduje siê w nowoczesnym budynku z 2020 roku, wyposa¿onym w windê i monitoring. Mieszkanie zosta³o wykoñczone z najwy¿sz¹ starannoœci¹ przy u¿yciu materia³ów najwy¿szej jakoœci. Du¿e okna zapewniaj¹ doskona³e doœwietlenie wszystkich pomieszczeñ. Idealne dla rodziny lub jako inwestycja pod wynajem.",
+                Features = new List<string>
+                {
+                    "Balkon 8m?",
+                    "Miejsce parkingowe w gara¿u podziemnym",
+                    "Komórka lokatorska",
+                    "Klimatyzacja",
+                    "Ogrzewanie pod³ogowe",
+                    "Winda",
+                    "Domofon z kamer¹",
+                    "Antyw³amaniowe drzwi",
+                    "Rolety zewnêtrzne",
+                    "W pe³ni wyposa¿ona kuchnia"
+                },
+                AddedDate = DateTime.Now.AddDays(-15),
+                Views = 342
+            },
+            new PropertyDetail
+            {
+                Id = 2,
+                Title = "Przestronny Dom z Ogrodem",
+                Location = "Kraków, Bronowice",
+                City = "Kraków",
+                Type = "Dom",
+                Price = 1450000,
+                Area = 180,
+                Rooms = 5,
+                Floor = 2,
+                YearBuilt = 2018,
+                ImageUrl = "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=800",
+                Description = "Piêkny, wolnostoj¹cy dom w spokojnej okolicy Bronowic. Nieruchomoœæ o powierzchni 180m? usytuowana na dzia³ce 800m?. Dom w doskona³ym stanie technicznym, gotowy do zamieszkania. Przestronna kuchnia po³¹czona z jadalni¹, du¿y salon z wyjœciem na taras. Na piêtrze cztery sypialnie i dwie ³azienki. Ogród z automatycznym systemem nawadniania.",
+                Features = new List<string>
+                {
+                    "Dzia³ka 800m?",
+                    "Gara¿ na 2 samochody",
+                    "Taras 40m?",
+                    "Ogród",
+                    "Grill murowany",
+                    "Alarm",
+                    "Monitoring",
+                    "Kot³ownia gazowa",
+                    "Rekuperacja",
+                    "System Smart Home",
+                    "Ogrodzenie posesji"
+                },
+                AddedDate = DateTime.Now.AddDays(-8),
+                Views = 567
+            },
+            new PropertyDetail
+            {
+                Id = 3,
+                Title = "Apartament z Widokiem na Morze",
+                Location = "Gdañsk, Przymorze",
+                City = "Gdañsk",
+                Type = "Mieszkanie",
+                Price = 720000,
+                Area = 52,
+                Rooms = 2,
+                Floor = 12,
+                YearBuilt = 2019,
+                ImageUrl = "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800",
+                Description = "Ekskluzywny apartament na 12 piêtrze z przepiêknym widokiem na Zatokê Gdañsk¹. Nieruchomoœæ w doskona³ym standardzie, jasna i s³oneczna. Du¿y balkon idealny na relaks z widokiem na morze. Budynek z ca³odobow¹ ochron¹ i recepcj¹. W pobli¿u pla¿a, marina i liczne restauracje. Doskona³a lokalizacja komunikacyjna.",
+                Features = new List<string>
+                {
+                    "Widok na morze",
+                    "Balkon 6m?",
+                    "Miejsce parkingowe",
+                    "Recepcja 24h",
+                    "Ochrona",
+                    "Klimatyzacja",
+                    "Winda",
+                    "Bliskoœæ pla¿y",
+                    "Nowoczesna zabudowa kuchenna"
+                },
+                AddedDate = DateTime.Now.AddDays(-22),
+                Views = 892
+            },
+            new PropertyDetail
+            {
+                Id = 4,
+                Title = "Luksusowy Penthouse",
+                Location = "Wroc³aw, Stare Miasto",
+                City = "Wroc³aw",
+                Type = "Mieszkanie",
+                Price = 2100000,
+                Area = 120,
+                Rooms = 4,
+                Floor = 8,
+                YearBuilt = 2021,
+                ImageUrl = "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800",
+                Description = "Wyj¹tkowy penthouse w sercu Starego Miasta we Wroc³awiu. Apartament na ostatnim piêtrze presti¿owego budynku z 2021 roku. Ogromny taras widokowy z widokiem na panoramê miasta. Luksusowe wykoñczenie premium, designer furniture. System klimatyzacji i inteligentnego zarz¹dzania domem. Dwa miejsca parkingowe w gara¿u podziemnym.",
+                Features = new List<string>
+                {
+                    "Taras 80m?",
+                    "Widok na Stare Miasto",
+                    "2 miejsca parkingowe",
+                    "Komórka lokatorska",
+                    "Klimatyzacja multi-split",
+                    "Ogrzewanie pod³ogowe",
+                    "System Smart Home",
+                    "Alarm",
+                    "Meble premium",
+                    "Sauna prywatna",
+                    "Jacuzzi na tarasie"
+                },
+                AddedDate = DateTime.Now.AddDays(-5),
+                Views = 1234
+            },
+            new PropertyDetail
+            {
+                Id = 5,
+                Title = "Kameralne Mieszkanie dla Singla",
+                Location = "Poznañ, Je¿yce",
+                City = "Poznañ",
+                Type = "Mieszkanie",
+                Price = 420000,
+                Area = 38,
+                Rooms = 2,
+                Floor = 3,
+                YearBuilt = 2017,
+                ImageUrl = "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=800",
+                Description = "Przytulne, funkcjonalne mieszkanie w modnej dzielnicy Je¿yce. Idealne dla singla lub pary. Niedawno wyremontowane, w pe³ni umeblowane i wyposa¿one. Œwietna lokalizacja - blisko uczelni, centrum miasta, liczne kawiarnie i restauracje w okolicy. Niskie koszty utrzymania.",
+                Features = new List<string>
+                {
+                    "Balkon 4m?",
+                    "Piwnica",
+                    "Nowe okna",
+                    "Niskie op³aty",
+                    "Umeblowane",
+                    "Dostêp do internetu",
+                    "Blisko komunikacja miejska",
+                    "Okolica pe³na ¿ycia"
+                },
+                AddedDate = DateTime.Now.AddDays(-12),
+                Views = 445
+            },
+            new PropertyDetail
+            {
+                Id = 6,
+                Title = "Rodzinny Dom z Tarasem",
+                Location = "Katowice, Ligota",
+                City = "Katowice",
+                Type = "Dom",
+                Price = 980000,
+                Area = 145,
+                Rooms = 4,
+                Floor = 2,
+                YearBuilt = 2016,
+                ImageUrl = "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=800",
+                Description = "Komfortowy dom w zabudowie bliŸniaczej w spokojnej czêœci Ligoty. Doskona³a lokalizacja - blisko szko³y, przedszkola i terenów zielonych. Dom w bardzo dobrym stanie, z zadbanych ogrodem. Przestronny salon z kominkiem, nowoczesna kuchnia, na piêtrze trzy sypialnie. Idealny dla rodziny z dzieæmi.",
+                Features = new List<string>
+                {
+                    "Dzia³ka 350m?",
+                    "Gara¿",
+                    "Taras 25m?",
+                    "Kominek",
+                    "Ogród",
+                    "Altana ogrodowa",
+                    "Ogrzewanie gazowe",
+                    "Klimatyzacja",
+                    "Plac zabaw w pobli¿u",
+                    "Monitoring"
+                },
+                AddedDate = DateTime.Now.AddDays(-18),
+                Views = 623
+            },
+            new PropertyDetail
+            {
+                Id = 7,
+                Title = "Lokal Biurowy Klasy A",
+                Location = "Warszawa, Mokotów",
+                City = "Warszawa",
+                Type = "Lokal",
+                Price = 650000,
+                Area = 80,
+                Rooms = 3,
+                Floor = 4,
+                YearBuilt = 2019,
+                ImageUrl = "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800",
+                Description = "Reprezentacyjny lokal biurowy w nowoczesnym biurowcu klasy A na Mokotowie. Przestronny open space z mo¿liwoœci¹ aran¿acji wed³ug w³asnych potrzeb. Wysoki standard wykoñczenia, klimatyzacja, dostêp do serwerowni. W budynku recepcja, ochrona 24h, parking podziemny. Doskona³a lokalizacja biznesowa.",
+                Features = new List<string>
+                {
+                    "Klimatyzacja",
+                    "Recepcja",
+                    "Ochrona 24h",
+                    "Parking podziemny",
+                    "Winda",
+                    "Internet szerokopasmowy",
+                    "System kontroli dostêpu",
+                    "Aneks kuchenny",
+                    "Œwietna lokalizacja",
+                    "Blisko metro"
+                },
+                AddedDate = DateTime.Now.AddDays(-30),
+                Views = 234
+            },
+            new PropertyDetail
+            {
+                Id = 8,
+                Title = "Rezydencja pod Lasem",
+                Location = "Gdynia, Or³owo",
+                City = "Gdynia",
+                Type = "Dom",
+                Price = 2300000,
+                Area = 220,
+                Rooms = 6,
+                Floor = 2,
+                YearBuilt = 2022,
+                ImageUrl = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800",
+                Description = "Luksusowa rezydencja w ekskluzywnej lokalizacji Or³owa. Dom wybudowany w 2022 roku w najwy¿szym standardzie. Nowoczesna architektura ³¹cz¹ca funkcjonalnoœæ z estetyk¹. Ogromne przeszklenia zapewniaj¹ce doskona³e doœwietlenie. Przestronny salon z kominkiem, piêæ sypialni, trzy ³azienki. Dzia³ka z basenem i ogrodem. W pobli¿u las i klif nadmorski.",
+                Features = new List<string>
+                {
+                    "Dzia³ka 1200m?",
+                    "Basen zewnêtrzny",
+                    "Gara¿ na 3 samochody",
+                    "Sauna",
+                    "Si³ownia",
+                    "Taras 60m?",
+                    "Kominek",
+                    "Rekuperacja",
+                    "Fotowoltaika",
+                    "System Smart Home",
+                    "Monitoring",
+                    "Bliskoœæ lasu i morza"
+                },
+                AddedDate = DateTime.Now.AddDays(-3),
+                Views = 1567
+            }
+        };
+
+        Property = properties.FirstOrDefault(p => p.Id == Id);
+    }
+
+    private void ShareProperty()
+    {
+        // Funkcjonalnoœæ udostêpniania - mo¿na zaimplementowaæ Web Share API
+        // lub kopiowanie linku do schowka
+    }
+}

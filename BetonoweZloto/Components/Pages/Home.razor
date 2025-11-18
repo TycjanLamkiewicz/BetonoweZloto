@@ -163,6 +163,7 @@
                             </div>
                         </div>
                         <button class="w-full bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-gray-900/50 touch-manipulation"
+                                onclick="@($"window.location.href='/oferty/{property.Id}'")"
                                 aria-label="Zobacz szczegóły oferty @property.Title">
                             Zobacz szczegóły
                         </button>
@@ -217,6 +218,7 @@
 @code {
     private class PropertyListing
     {
+        public int Id { get; set; }
         public string Title { get; set; } = "";
         public string Location { get; set; } = "";
         public string Price { get; set; } = "";
@@ -229,6 +231,7 @@
     {
         new PropertyListing
         {
+            Id = 1,
             Title = "Nowoczesne Mieszkanie w Centrum",
             Location = "Warszawa, Śródmieście",
             Price = "890 000 zł",
@@ -238,6 +241,7 @@
         },
         new PropertyListing
         {
+            Id = 2,
             Title = "Przestronny Dom z Ogrodem",
             Location = "Kraków, Bronowice",
             Price = "1 450 000 zł",
@@ -247,6 +251,7 @@
         },
         new PropertyListing
         {
+            Id = 3,
             Title = "Apartament z Widokiem na Morze",
             Location = "Gdańsk, Przymorze",
             Price = "720 000 zł",
@@ -256,6 +261,7 @@
         },
         new PropertyListing
         {
+            Id = 4,
             Title = "Luksusowy Penthouse",
             Location = "Wrocław, Stare Miasto",
             Price = "2 100 000 zł",
@@ -265,6 +271,7 @@
         },
         new PropertyListing
         {
+            Id = 5,
             Title = "Kameralne Mieszkanie dla Singla",
             Location = "Poznań, Jeżyce",
             Price = "420 000 zł",
@@ -274,6 +281,7 @@
         },
         new PropertyListing
         {
+            Id = 6,
             Title = "Rodzinny Dom z Tarasem",
             Location = "Katowice, Ligota",
             Price = "980 000 zł",
