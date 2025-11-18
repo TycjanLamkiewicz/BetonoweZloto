@@ -16,31 +16,8 @@
     </div>
 </section>
 
-<!-- Categories -->
-<section class="py-8 bg-white border-b border-gray-200 sticky top-20 z-40">
-    <div class="container mx-auto px-4">
-        <div class="flex flex-wrap gap-3 justify-center" role="group" aria-label="Kategorie artyku³ów">
-            <button type="button"
-                    @onclick="() => FilterByCategory(null)"
-                    class="px-6 py-2 rounded-full font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 touch-manipulation @(selectedCategory == null ? "bg-gold-500 text-gray-900" : "bg-gray-100 text-gray-700 hover:bg-gray-200")"
-                    aria-pressed="@(selectedCategory == null)">
-                Wszystkie
-            </button>
-            @foreach (var category in Categories)
-            {
-                <button type="button"
-                        @onclick="() => FilterByCategory(category)"
-                        class="px-6 py-2 rounded-full font-semibold transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 touch-manipulation @(selectedCategory == category ? "bg-gold-500 text-gray-900" : "bg-gray-100 text-gray-700 hover:bg-gray-200")"
-                        aria-pressed="@(selectedCategory == category)">
-                    @category
-                </button>
-            }
-        </div>
-    </div>
-</section>
-
 <!-- Featured Article -->
-@if (FilteredArticles.Any() && selectedCategory == null)
+@if (FilteredArticles.Any())
 {
     var featured = FilteredArticles.First();
     <section class="py-12 bg-gray-50">
@@ -106,18 +83,12 @@
                     </svg>
                     <h3 class="text-2xl font-bold text-gray-900 mb-4">Brak artyku³ów</h3>
                     <p class="text-gray-600 mb-8">W tej kategorii nie ma jeszcze artyku³ów</p>
-                    <button 
-                        type="button"
-                        @onclick="() => FilterByCategory(null)"
-                        class="px-8 py-3 bg-gold-500 text-gray-900 font-semibold rounded-lg hover:bg-gold-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gold-500/50 touch-manipulation">
-                        Zobacz wszystkie
-                    </button>
                 </div>
             }
             else
             {
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    @foreach (var article in FilteredArticles.Skip(selectedCategory == null ? 1 : 0))
+                    @foreach (var article in FilteredArticles.Skip(1))
                     {
                         <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 group flex flex-col">
                             <div class="relative overflow-hidden aspect-[16/9]">
@@ -200,7 +171,6 @@
 </section>
 
 @code {
-    private string? selectedCategory = null;
     private string newsletterEmail = "";
     private string newsletterMessage = "";
     
@@ -217,16 +187,6 @@
         public string AuthorRole { get; set; } = "";
         public string AuthorPhoto { get; set; } = "";
     }
-    
-    private List<string> Categories = new() 
-    { 
-        "Kupno", 
-        "Sprzeda¿", 
-        "Kredyty", 
-        "Inwestycje", 
-        "Prawo", 
-        "Porady"
-    };
     
     private List<Article> AllArticles = new();
     private List<Article> FilteredArticles = new();
@@ -355,23 +315,6 @@
         };
         
         FilteredArticles = AllArticles.OrderByDescending(a => a.Date).ToList();
-    }
-    
-    private void FilterByCategory(string? category)
-    {
-        selectedCategory = category;
-        
-        if (string.IsNullOrEmpty(category))
-        {
-            FilteredArticles = AllArticles.OrderByDescending(a => a.Date).ToList();
-        }
-        else
-        {
-            FilteredArticles = AllArticles
-                .Where(a => a.Category == category)
-                .OrderByDescending(a => a.Date)
-                .ToList();
-        }
     }
     
     private void ReadArticle(Article article)
