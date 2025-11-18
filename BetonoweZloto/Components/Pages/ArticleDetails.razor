@@ -195,45 +195,6 @@ else
         </div>
     </section>
 
-    <!-- Related Articles -->
-    <section class="bg-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-3xl font-bold text-gray-900 mb-8">Podobne artyku³y</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    @foreach (var relatedArticle in RelatedArticles)
-                    {
-                        <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
-                            <div class="relative overflow-hidden aspect-[16/9]">
-                                <img src="@relatedArticle.ImageUrl" 
-                                     alt="@relatedArticle.Title" 
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                     loading="lazy" />
-                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-gray-900">
-                                    @relatedArticle.Category
-                                </div>
-                            </div>
-                            <div class="p-6">
-                                <div class="text-sm text-gray-500 mb-2">
-                                    <time datetime="@relatedArticle.Date.ToString("yyyy-MM-dd")">@relatedArticle.Date.ToString("dd.MM.yyyy")</time>
-                                </div>
-                                <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">@relatedArticle.Title</h3>
-                                <p class="text-gray-600 mb-4 line-clamp-2">@relatedArticle.Excerpt</p>
-                                <a href="/porady/@relatedArticle.Id" 
-                                   class="inline-flex items-center text-gold-600 font-semibold hover:text-gold-700 transition-colors">
-                                    Czytaj wiêcej
-                                    <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </article>
-                    }
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Back to Blog Button -->
     <div class="bg-gray-50 py-8">
         <div class="container mx-auto px-4">
@@ -255,7 +216,6 @@ else
     public int Id { get; set; }
 
     private ArticleDetail? Article { get; set; }
-    private List<RelatedArticleInfo> RelatedArticles { get; set; } = new();
 
     private class ContentSection
     {
@@ -283,20 +243,9 @@ else
         public List<string> Tags { get; set; } = new();
     }
 
-    private class RelatedArticleInfo
-    {
-        public int Id { get; set; }
-        public string Title { get; set; } = "";
-        public string Excerpt { get; set; } = "";
-        public string Category { get; set; } = "";
-        public DateTime Date { get; set; }
-        public string ImageUrl { get; set; } = "";
-    }
-
     protected override void OnInitialized()
     {
         LoadArticle();
-        LoadRelatedArticles();
     }
 
     private void LoadArticle()
@@ -436,51 +385,6 @@ else
         };
 
         Article = articles.FirstOrDefault(a => a.Id == Id);
-    }
-
-    private void LoadRelatedArticles()
-    {
-        // Mock data - w rzeczywistej aplikacji pobierane by³yby artyku³y z tej samej kategorii
-        // Wybieramy inne artyku³y ni¿ obecnie przegl¹dany
-        var allRelatedArticles = new List<RelatedArticleInfo>
-        {
-            new RelatedArticleInfo
-            {
-                Id = 1,
-                Title = "10 Kroków do Kupna Pierwszego Mieszkania",
-                Excerpt = "Kompleksowy przewodnik dla osób kupuj¹cych swoj¹ pierwsz¹ nieruchomoœæ.",
-                Category = "Kupno",
-                Date = new DateTime(2024, 1, 15),
-                ImageUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800"
-            },
-            new RelatedArticleInfo
-            {
-                Id = 2,
-                Title = "Jak Przygotowaæ Mieszkanie do Sprzeda¿y?",
-                Excerpt = "Praktyczne wskazówki, jak zwiêkszyæ wartoœæ nieruchomoœci przed wystawieniem jej na sprzeda¿.",
-                Category = "Sprzeda¿",
-                Date = new DateTime(2024, 1, 10),
-                ImageUrl = "https://images.unsplash.com/photo-1556912173-46c336c7fd55?q=80&w=800"
-            },
-            new RelatedArticleInfo
-            {
-                Id = 3,
-                Title = "Kredyt Hipoteczny - Wszystko, Co Musisz Wiedzieæ",
-                Excerpt = "Szczegó³owy przewodnik po kredytach hipotecznych w 2024 roku.",
-                Category = "Kredyty",
-                Date = new DateTime(2024, 1, 5),
-                ImageUrl = "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800"
-            }
-        };
-
-        // Wybierz artyku³y inne ni¿ aktualnie przegl¹dany
-        RelatedArticles = allRelatedArticles.Where(a => a.Id != Id).Take(3).ToList();
-        
-        // Jeœli mamy mniej ni¿ 3 artyku³y po usuniêciu aktualnego, uzupe³nij listê
-        if (RelatedArticles.Count < 3)
-        {
-            RelatedArticles = allRelatedArticles.Take(3).ToList();
-        }
     }
 
     private void ShareArticle(string platform)

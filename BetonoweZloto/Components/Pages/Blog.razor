@@ -131,49 +131,7 @@
     </div>
 </section>
 
-<!-- Newsletter Section -->
-<section class="py-20 bg-white">
-    <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="bg-gradient-to-br from-gold-500 to-gold-600 rounded-3xl p-12 text-gray-900">
-                <svg class="w-16 h-16 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Newsletter z&nbsp;Poradami</h2>
-                <p class="text-lg mb-8 text-gray-800">
-                    Otrzymuj najnowsze artyku³y, porady ekspertów i&nbsp;aktualizacje z&nbsp;rynku nieruchomoœci bezpoœrednio na swoj¹ skrzynkê
-                </p>
-                <form class="max-w-md mx-auto" @onsubmit="SubscribeNewsletter" @onsubmit:preventDefault>
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <input 
-                            type="email" 
-                            @bind="newsletterEmail"
-                            placeholder="Twój adres e-mail…"
-                            required
-                            class="flex-1 px-6 py-4 rounded-lg border-2 border-gray-900/20 focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-900/20 text-gray-900 placeholder-gray-600"
-                            aria-label="Adres email do newslettera" />
-                        <button 
-                            type="submit"
-                            class="px-8 py-4 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50 touch-manipulation whitespace-nowrap">
-                            Zapisz siê
-                        </button>
-                    </div>
-                    @if (!string.IsNullOrEmpty(newsletterMessage))
-                    {
-                        <div class="mt-4 p-3 bg-white/90 rounded-lg text-gray-900 font-medium">
-                            @newsletterMessage
-                        </div>
-                    }
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
-
 @code {
-    private string newsletterEmail = "";
-    private string newsletterMessage = "";
-    
     private class Article
     {
         public int Id { get; set; }
@@ -237,22 +195,5 @@
         };
         
         FilteredArticles = AllArticles.OrderByDescending(a => a.Date).ToList();
-    }
-    
-    private void SubscribeNewsletter()
-    {
-        if (!string.IsNullOrWhiteSpace(newsletterEmail))
-        {
-            newsletterMessage = "Dziêkujemy za zapisanie siê do newslettera!";
-            newsletterEmail = "";
-            StateHasChanged();
-            
-            // Reset message after 3 seconds
-            Task.Delay(3000).ContinueWith(_ => 
-            {
-                newsletterMessage = "";
-                InvokeAsync(StateHasChanged);
-            });
-        }
     }
 }
