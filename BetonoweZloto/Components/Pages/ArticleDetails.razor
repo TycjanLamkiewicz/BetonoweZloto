@@ -441,36 +441,46 @@ else
     private void LoadRelatedArticles()
     {
         // Mock data - w rzeczywistej aplikacji pobierane by³yby artyku³y z tej samej kategorii
-        RelatedArticles = new List<RelatedArticleInfo>
+        // Wybieramy inne artyku³y ni¿ obecnie przegl¹dany
+        var allRelatedArticles = new List<RelatedArticleInfo>
         {
             new RelatedArticleInfo
             {
-                Id = 4,
-                Title = "Inwestycje w Nieruchomoœci - Poradnik dla Pocz¹tkuj¹cych",
-                Excerpt = "Czy warto inwestowaæ w nieruchomoœci? Poznaj ró¿ne strategie inwestycyjne.",
-                Category = "Inwestycje",
-                Date = new DateTime(2023, 12, 28),
-                ImageUrl = "https://images.unsplash.com/photo-1460472178825-e5240623afd5?q=80&w=800"
+                Id = 1,
+                Title = "10 Kroków do Kupna Pierwszego Mieszkania",
+                Excerpt = "Kompleksowy przewodnik dla osób kupuj¹cych swoj¹ pierwsz¹ nieruchomoœæ.",
+                Category = "Kupno",
+                Date = new DateTime(2024, 1, 15),
+                ImageUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800"
             },
             new RelatedArticleInfo
             {
-                Id = 5,
-                Title = "Najwa¿niejsze Zmiany w Prawie Nieruchomoœci 2024",
-                Excerpt = "Przegl¹d najwa¿niejszych zmian prawnych dotycz¹cych rynku nieruchomoœci.",
-                Category = "Prawo",
-                Date = new DateTime(2023, 12, 20),
-                ImageUrl = "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800"
+                Id = 2,
+                Title = "Jak Przygotowaæ Mieszkanie do Sprzeda¿y?",
+                Excerpt = "Praktyczne wskazówki, jak zwiêkszyæ wartoœæ nieruchomoœci przed wystawieniem jej na sprzeda¿.",
+                Category = "Sprzeda¿",
+                Date = new DateTime(2024, 1, 10),
+                ImageUrl = "https://images.unsplash.com/photo-1556912173-46c336c7fd55?q=80&w=800"
             },
             new RelatedArticleInfo
             {
-                Id = 6,
-                Title = "Home Staging - Sztuka Prezentacji Nieruchomoœci",
-                Excerpt = "Jak profesjonalnie zaprezentowaæ mieszkanie na sprzeda¿ lub wynajem?",
-                Category = "Porady",
-                Date = new DateTime(2023, 12, 15),
-                ImageUrl = "https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=800"
+                Id = 3,
+                Title = "Kredyt Hipoteczny - Wszystko, Co Musisz Wiedzieæ",
+                Excerpt = "Szczegó³owy przewodnik po kredytach hipotecznych w 2024 roku.",
+                Category = "Kredyty",
+                Date = new DateTime(2024, 1, 5),
+                ImageUrl = "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800"
             }
         };
+
+        // Wybierz artyku³y inne ni¿ aktualnie przegl¹dany
+        RelatedArticles = allRelatedArticles.Where(a => a.Id != Id).Take(3).ToList();
+        
+        // Jeœli mamy mniej ni¿ 3 artyku³y po usuniêciu aktualnego, uzupe³nij listê
+        if (RelatedArticles.Count < 3)
+        {
+            RelatedArticles = allRelatedArticles.Take(3).ToList();
+        }
     }
 
     private void ShareArticle(string platform)
