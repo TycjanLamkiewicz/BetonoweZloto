@@ -59,19 +59,19 @@
 
                     <!-- Rooms -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Minimalna liczba pokoi</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Liczba pokoi (dokładnie)</label>
                         <div class="flex gap-2">
                             @for (int i = 1; i <= 4; i++)
                             {
                                 var roomCount = i;
-                                <button @onclick="() => SetMinRooms(roomCount)"
-                                        class="flex-1 py-2 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-gold-500 @(MinRooms == roomCount ? "bg-gold-500 text-white border-gold-500 shadow-md" : "bg-white text-gray-700 border-gray-300 hover:border-gold-500 hover:bg-gold-50")">
-                                    @roomCount+
+                                <button @onclick="() => SetTargetRooms(roomCount)"
+                                        class="flex-1 py-2 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-gold-500 @(TargetRooms == roomCount ? "bg-gold-500 text-white border-gold-500 shadow-md" : "bg-white text-gray-700 border-gray-300 hover:border-gold-500 hover:bg-gold-50")">
+                                    @roomCount
                                 </button>
                             }
-                            <button @onclick="() => SetMinRooms(0)"
+                            <button @onclick="() => SetTargetRooms(0)"
                                     title="Dowolna liczba pokoi"
-                                    class="px-3 py-2 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-gold-500 @(MinRooms == 0 ? "bg-gold-500 text-white border-gold-500 shadow-md" : "bg-white text-gray-700 border-gray-300 hover:border-gold-500 hover:bg-gold-50")">
+                                    class="px-3 py-2 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-gold-500 @(TargetRooms == 0 ? "bg-gold-500 text-white border-gold-500 shadow-md" : "bg-white text-gray-700 border-gray-300 hover:border-gold-500 hover:bg-gold-50")">
                                 &#x2715;
                             </button>
                         </div>
@@ -94,16 +94,7 @@
         <main class="w-full lg:w-3/4">
             <div class="mb-6 flex justify-between items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                 <p class="text-gray-600">Znaleziono ofert: <span class="font-bold text-gray-900">@FilteredProperties.Count</span></p>
-
-                <!-- Sortowanie (opcjonalne) -->
-                <div class="flex items-center gap-2">
-                    <span class="text-sm text-gray-500 hidden sm:inline">Sortuj:</span>
-                    <select class="text-sm border-gray-300 rounded-md focus:ring-gold-500 focus:border-gold-500">
-                        <option>Najnowsze</option>
-                        <option>Cena: rosnąco</option>
-                        <option>Cena: malejąco</option>
-                    </select>
-                </div>
+                <!-- Sortowanie usunięte -->
             </div>
 
             @if (FilteredProperties.Any())
@@ -183,7 +174,8 @@
     private string SearchQuery { get; set; } = "";
     private string SelectedType { get; set; } = "";
     private decimal? MaxPrice { get; set; }
-    private int MinRooms { get; set; } = 0;
+    // Zmienna przemianowana dla czytelności z MinRooms na TargetRooms
+    private int TargetRooms { get; set; } = 0;
 
     // Dane
     private List<PropertyListing> AllProperties = new();
@@ -191,7 +183,7 @@
 
     protected override void OnInitialized()
     {
-        // Mock danych (odpowiada stylowi ze strony głównej)
+        // Mock danych
         AllProperties = new List<PropertyListing>
         {
             new PropertyListing { Id = 1, Title = "Nowoczesne Mieszkanie w Centrum", Location = "Warszawa, Śródmieście", City = "Warszawa", Type = "Mieszkanie", Price = 890000, Area = 65, Rooms = 3, ImageUrl = "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=800" },
@@ -207,7 +199,6 @@
         FilteredProperties = new List<PropertyListing>(AllProperties);
     }
 
-    // Pozwala filtrować po naciśnięciu Enter w polu tekstowym
     private void EnterKeyHandler(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
@@ -216,18 +207,16 @@
         }
     }
 
-    private void SetMinRooms(int count)
+    private void SetTargetRooms(int count)
     {
-        MinRooms = count;
-        // Opcjonalnie odkomentuj, jeśli chcesz filtrować natychmiast po kliknięciu w liczbę pokoi
-        // FilterProperties();
+        TargetRooms = count;
     }
 
     private void FilterProperties()
     {
         var query = AllProperties.AsEnumerable();
 
-        // Filtrowanie po tekście (Title, Location lub City)
+        // Filtrowanie po tekście
         if (!string.IsNullOrWhiteSpace(SearchQuery))
         {
             query = query.Where(p =>
@@ -248,10 +237,10 @@
             query = query.Where(p => p.Price <= MaxPrice.Value);
         }
 
-        // Filtrowanie po liczbie pokoi
-        if (MinRooms > 0)
+        // Filtrowanie po liczbie pokoi (dokładna liczba)
+        if (TargetRooms > 0)
         {
-            query = query.Where(p => p.Rooms >= MinRooms);
+            query = query.Where(p => p.Rooms == TargetRooms);
         }
 
         FilteredProperties = query.ToList();
@@ -262,7 +251,7 @@
         SearchQuery = "";
         SelectedType = "";
         MaxPrice = null;
-        MinRooms = 0;
+        TargetRooms = 0;
         FilteredProperties = new List<PropertyListing>(AllProperties);
     }
 }
