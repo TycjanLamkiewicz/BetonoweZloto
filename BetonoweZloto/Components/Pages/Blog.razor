@@ -56,13 +56,13 @@
                                     <div class="text-sm text-gray-600">@featured.AuthorRole</div>
                                 </div>
                             </div>
-                            <button class="inline-flex items-center px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50 touch-manipulation self-start"
-                                    @onclick="() => ReadArticle(featured)">
+                            <a href="/porady/@featured.Id"
+                               class="inline-flex items-center px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50 touch-manipulation self-start">
                                 Czytaj wiêcej
                                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                                 </svg>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </article>
@@ -118,10 +118,10 @@
                                         <div class="text-gray-600">@article.AuthorRole</div>
                                     </div>
                                 </div>
-                                <button class="w-full py-3 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-900 hover:text-white transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50 touch-manipulation"
-                                        @onclick="() => ReadArticle(article)">
+                                <a href="/porady/@article.Id"
+                                   class="w-full py-3 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-900 hover:text-white transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50 touch-manipulation text-center block">
                                     Czytaj wiêcej
-                                </button>
+                                </a>
                             </div>
                         </article>
                     }
@@ -315,12 +315,6 @@
         };
         
         FilteredArticles = AllArticles.OrderByDescending(a => a.Date).ToList();
-    }
-    
-    private void ReadArticle(Article article)
-    {
-        // In a real application, this would navigate to the article detail page
-        Console.WriteLine($"Reading article: {article.Title}");
     }
     
     private void SubscribeNewsletter()

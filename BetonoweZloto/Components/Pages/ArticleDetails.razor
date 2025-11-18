@@ -1,0 +1,493 @@
+@page "/porady/{id:int}"
+@using System.Globalization
+@rendermode InteractiveServer
+
+<PageTitle>@Article?.Title - BetonoweZloto.pl</PageTitle>
+
+@if (Article == null)
+{
+    <div class="container mx-auto px-4 py-20 text-center">
+        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">Nie znaleziono artyku³u</h2>
+        <p class="text-gray-600 mb-8">Artyku³ o podanym identyfikatorze nie istnieje lub zosta³ usuniêty.</p>
+        <a href="/porady" class="inline-flex items-center px-6 py-3 rounded-lg bg-gold-500 text-gray-900 font-bold hover:bg-gold-400 transition-colors shadow-md">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Powrót do bloga
+        </a>
+    </div>
+}
+else
+{
+    <!-- Breadcrumb -->
+    <nav class="bg-gray-50 border-b border-gray-200" aria-label="Breadcrumb">
+        <div class="container mx-auto px-4 py-4">
+            <ol class="flex items-center space-x-2 text-sm">
+                <li><a href="/" class="text-gray-600 hover:text-gold-600 transition-colors">Start</a></li>
+                <li><svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg></li>
+                <li><a href="/porady" class="text-gray-600 hover:text-gold-600 transition-colors">Porady i Blog</a></li>
+                <li><svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg></li>
+                <li><span class="text-gray-900 font-medium">@Article.Title</span></li>
+            </ol>
+        </div>
+    </nav>
+
+    <!-- Article Header -->
+    <article class="bg-white">
+        <div class="container mx-auto px-4 py-12">
+            <div class="max-w-4xl mx-auto">
+                <!-- Category and Reading Info -->
+                <div class="flex flex-wrap items-center gap-4 mb-6">
+                    <span class="px-4 py-2 bg-gold-500 text-gray-900 rounded-full text-sm font-bold">
+                        @Article.Category
+                    </span>
+                    <span class="text-gray-600">
+                        <time datetime="@Article.Date.ToString("yyyy-MM-dd")">@Article.Date.ToString("dd MMMM yyyy", new CultureInfo("pl-PL"))</time>
+                    </span>
+                    <span class="text-gray-600">• @Article.ReadTime min czytania</span>
+                    <span class="text-gray-600">• @Article.Views wyœwietleñ</span>
+                </div>
+
+                <!-- Title -->
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                    @Article.Title
+                </h1>
+
+                <!-- Excerpt -->
+                <p class="text-xl md:text-2xl text-gray-600 leading-relaxed mb-8">
+                    @Article.Excerpt
+                </p>
+
+                <!-- Author Info -->
+                <div class="flex items-center gap-4 pb-8 border-b border-gray-200">
+                    <img src="@Article.AuthorPhoto" 
+                         alt="@Article.Author" 
+                         class="w-16 h-16 rounded-full object-cover"
+                         loading="eager" />
+                    <div>
+                        <div class="text-lg font-bold text-gray-900">@Article.Author</div>
+                        <div class="text-gray-600">@Article.AuthorRole</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="container mx-auto px-4 pb-12">
+            <div class="max-w-5xl mx-auto">
+                <div class="aspect-[16/9] rounded-2xl overflow-hidden shadow-2xl">
+                    <img src="@Article.ImageUrl" 
+                         alt="@Article.Title" 
+                         class="w-full h-full object-cover"
+                         loading="eager" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Article Content -->
+        <div class="container mx-auto px-4 pb-12">
+            <div class="max-w-4xl mx-auto">
+                <div class="prose prose-lg prose-gray max-w-none">
+                    @foreach (var contentSection in Article.Content)
+                    {
+                        @if (contentSection.Type == "heading")
+                        {
+                            <h2 class="text-3xl font-bold text-gray-900 mt-12 mb-6">@contentSection.Text</h2>
+                        }
+                        else if (contentSection.Type == "paragraph")
+                        {
+                            <p class="text-gray-700 leading-relaxed mb-6 text-lg">@contentSection.Text</p>
+                        }
+                        else if (contentSection.Type == "list")
+                        {
+                            <ul class="list-disc list-inside space-y-3 mb-6 text-gray-700 text-lg">
+                                @foreach (var item in contentSection.Items)
+                                {
+                                    <li class="pl-2">@item</li>
+                                }
+                            </ul>
+                        }
+                        else if (contentSection.Type == "quote")
+                        {
+                            <blockquote class="border-l-4 border-gold-500 pl-6 py-4 my-8 bg-gray-50 rounded-r-lg">
+                                <p class="text-xl italic text-gray-800 leading-relaxed">@contentSection.Text</p>
+                            </blockquote>
+                        }
+                    }
+                </div>
+
+                <!-- Tags -->
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <h3 class="text-sm font-semibold text-gray-500 mb-4 uppercase tracking-wide">Tagi</h3>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach (var tag in Article.Tags)
+                        {
+                            <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-gray-200 transition-colors cursor-pointer">
+                                #@tag
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Share Section -->
+                <div class="mt-12 pt-8 border-t border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Udostêpnij artyku³</h3>
+                    <div class="flex gap-4">
+                        <button @onclick="@(() => ShareArticle("facebook"))" 
+                                class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-600/50">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                            Facebook
+                        </button>
+                        <button @onclick="@(() => ShareArticle("twitter"))" 
+                                class="flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                            Twitter
+                        </button>
+                        <button @onclick="@(() => ShareArticle("linkedin"))" 
+                                class="flex items-center gap-2 px-6 py-3 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors font-semibold focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-700/50">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                            LinkedIn
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Author Bio Section -->
+    <section class="bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+                    <div class="flex flex-col md:flex-row gap-8 items-start">
+                        <img src="@Article.AuthorPhoto" 
+                             alt="@Article.Author" 
+                             class="w-32 h-32 rounded-full object-cover flex-shrink-0"
+                             loading="lazy" />
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">@Article.Author</h3>
+                            <p class="text-gold-600 font-semibold mb-4">@Article.AuthorRole</p>
+                            <p class="text-gray-700 leading-relaxed mb-6">@Article.AuthorBio</p>
+                            <div class="flex gap-4">
+                                <a href="mailto:@Article.AuthorEmail" 
+                                   class="inline-flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold text-sm">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                    </svg>
+                                    Skontaktuj siê
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Articles -->
+    <section class="bg-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8">Podobne artyku³y</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    @foreach (var relatedArticle in RelatedArticles)
+                    {
+                        <article class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
+                            <div class="relative overflow-hidden aspect-[16/9]">
+                                <img src="@relatedArticle.ImageUrl" 
+                                     alt="@relatedArticle.Title" 
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                     loading="lazy" />
+                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-gray-900">
+                                    @relatedArticle.Category
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <div class="text-sm text-gray-500 mb-2">
+                                    <time datetime="@relatedArticle.Date.ToString("yyyy-MM-dd")">@relatedArticle.Date.ToString("dd.MM.yyyy")</time>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2">@relatedArticle.Title</h3>
+                                <p class="text-gray-600 mb-4 line-clamp-2">@relatedArticle.Excerpt</p>
+                                <a href="/porady/@relatedArticle.Id" 
+                                   class="inline-flex items-center text-gold-600 font-semibold hover:text-gold-700 transition-colors">
+                                    Czytaj wiêcej
+                                    <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </article>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Blog Button -->
+    <div class="bg-gray-50 py-8">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <a href="/porady" 
+                   class="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Powrót do bloga
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ArticleDetail? Article { get; set; }
+    private List<RelatedArticleInfo> RelatedArticles { get; set; } = new();
+
+    private class ContentSection
+    {
+        public string Type { get; set; } = ""; // heading, paragraph, list, quote
+        public string Text { get; set; } = "";
+        public List<string> Items { get; set; } = new();
+    }
+
+    private class ArticleDetail
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = "";
+        public string Excerpt { get; set; } = "";
+        public string Category { get; set; } = "";
+        public DateTime Date { get; set; }
+        public int ReadTime { get; set; }
+        public int Views { get; set; }
+        public string ImageUrl { get; set; } = "";
+        public string Author { get; set; } = "";
+        public string AuthorRole { get; set; } = "";
+        public string AuthorPhoto { get; set; } = "";
+        public string AuthorBio { get; set; } = "";
+        public string AuthorEmail { get; set; } = "";
+        public List<ContentSection> Content { get; set; } = new();
+        public List<string> Tags { get; set; } = new();
+    }
+
+    private class RelatedArticleInfo
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = "";
+        public string Excerpt { get; set; } = "";
+        public string Category { get; set; } = "";
+        public DateTime Date { get; set; }
+        public string ImageUrl { get; set; } = "";
+    }
+
+    protected override void OnInitialized()
+    {
+        LoadArticle();
+        LoadRelatedArticles();
+    }
+
+    private void LoadArticle()
+    {
+        // Mock data - w rzeczywistej aplikacji dane pobierane z bazy danych
+        var articles = new List<ArticleDetail>
+        {
+            new ArticleDetail
+            {
+                Id = 1,
+                Title = "10 Kroków do Kupna Pierwszego Mieszkania",
+                Excerpt = "Kompleksowy przewodnik dla osób kupuj¹cych swoj¹ pierwsz¹ nieruchomoœæ. Dowiedz siê, na co zwróciæ uwagê i jak przygotowaæ siê do zakupu.",
+                Category = "Kupno",
+                Date = new DateTime(2024, 1, 15),
+                ReadTime = 8,
+                Views = 1247,
+                ImageUrl = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800",
+                Author = "Anna Kowalska",
+                AuthorRole = "Dyrektor Biura",
+                AuthorPhoto = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200",
+                AuthorBio = "Ekspert rynku nieruchomoœci z ponad 15-letnim doœwiadczeniem. Specjalizuje siê w doradztwie dla klientów kupuj¹cych pierwsz¹ nieruchomoœæ oraz inwestorów.",
+                AuthorEmail = "anna.kowalska@betonowezloto.pl",
+                Tags = new List<string> { "kupno", "mieszkanie", "porady", "kredyt", "pierwszemieszkanie" },
+                Content = new List<ContentSection>
+                {
+                    new ContentSection { Type = "paragraph", Text = "Kupno pierwszego mieszkania to jeden z najwa¿niejszych momentów w ¿yciu. To inwestycja, która wymaga starannego przemyœlenia i przygotowania. W tym artykule przedstawiamy kompleksowy przewodnik, który pomo¿e Ci przejœæ przez ca³y proces zakupu bez stresu." },
+                    new ContentSection { Type = "heading", Text = "1. Okreœl swój bud¿et" },
+                    new ContentSection { Type = "paragraph", Text = "Zanim zaczniesz szukaæ mieszkania, musisz dok³adnie okreœliæ, ile mo¿esz wydaæ. WeŸ pod uwagê nie tylko cenê nieruchomoœci, ale równie¿ koszty dodatkowe takie jak podatek od czynnoœci cywilnoprawnych, op³aty notarialne, wykoñczenie i ewentualne remonty." },
+                    new ContentSection { Type = "quote", Text = "Pamiêtaj, ¿e koszt mieszkania to nie tylko jego cena - do bud¿etu musisz doliczyæ równie¿ podatki, op³aty notarialne i koszty wykoñczenia." },
+                    new ContentSection { Type = "heading", Text = "2. SprawdŸ swoj¹ zdolnoœæ kredytow¹" },
+                    new ContentSection { Type = "paragraph", Text = "Jeœli planujesz skorzystaæ z kredytu hipotecznego, odwiedŸ kilka banków i sprawdŸ swoj¹ zdolnoœæ kredytow¹. Porównaj oferty ró¿nych instytucji finansowych - ró¿nice w oprocentowaniu mog¹ byæ znacz¹ce." },
+                    new ContentSection { Type = "heading", Text = "3. Wybierz odpowiedni¹ lokalizacjê" },
+                    new ContentSection { Type = "paragraph", Text = "Lokalizacja to klucz! Zastanów siê, co jest dla Ciebie najwa¿niejsze: bliskoœæ miejsca pracy, szko³y, komunikacja miejska, infrastruktura okoliczna. Pamiêtaj, ¿e dobrze dobrana lokalizacja to tak¿e œwietna inwestycja d³ugoterminowa." },
+                    new ContentSection { Type = "list", Items = new List<string> 
+                    { 
+                        "Dostêp do komunikacji miejskiej",
+                        "Bliskoœæ szkó³ i przedszkoli (jeœli masz dzieci)",
+                        "Infrastruktura handlowo-us³ugowa w okolicy",
+                        "Tereny zielone i miejsca rekreacji",
+                        "Bezpieczeñstwo dzielnicy"
+                    }},
+                    new ContentSection { Type = "heading", Text = "4. Ustal swoje wymagania" },
+                    new ContentSection { Type = "paragraph", Text = "Stwórz listê swoich wymagañ i priorytetów. Podziel je na te, które s¹ absolutnie niezbêdne (must-have) i te, które by³yby mi³ym dodatkiem (nice-to-have). To pomo¿e Ci w podejmowaniu decyzji podczas ogl¹dania mieszkañ." },
+                    new ContentSection { Type = "heading", Text = "5. Zbierz niezbêdne dokumenty" },
+                    new ContentSection { Type = "paragraph", Text = "Przygotuj wszystkie dokumenty potrzebne do wziêcia kredytu: zaœwiadczenie o dochodach, PIT, historiê zatrudnienia. Im wczeœniej to zrobisz, tym szybciej bêdziesz móg³ sfinalizowaæ transakcjê, gdy znajdziesz wymarzoneemieszk anie." },
+                    new ContentSection { Type = "heading", Text = "Podsumowanie" },
+                    new ContentSection { Type = "paragraph", Text = "Kupno pierwszego mieszkania to wielki krok, ale przy odpowiednim przygotowaniu mo¿e byæ przyjemnym doœwiadczeniem. Pamiêtaj, aby nie spieszyæ siê z decyzj¹ i dok³adnie przemyœleæ wszystkie aspekty zakupu. Jeœli potrzebujesz pomocy, nasz zespó³ ekspertów jest zawsze do Twojej dyspozycji!" }
+                }
+            },
+            new ArticleDetail
+            {
+                Id = 2,
+                Title = "Jak Przygotowaæ Mieszkanie do Sprzeda¿y?",
+                Excerpt = "Praktyczne wskazówki, jak zwiêkszyæ wartoœæ nieruchomoœci przed wystawieniem jej na sprzeda¿. Home staging i drobne remonty, które siê op³acaj¹.",
+                Category = "Sprzeda¿",
+                Date = new DateTime(2024, 1, 10),
+                ReadTime = 6,
+                Views = 892,
+                ImageUrl = "https://images.unsplash.com/photo-1556912173-46c336c7fd55?q=80&w=800",
+                Author = "Piotr Nowak",
+                AuthorRole = "Senior Agent",
+                AuthorPhoto = "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200",
+                AuthorBio = "Certyfikowany agent nieruchomoœci z 12-letnim doœwiadczeniem. Specjalizuje siê w przygotowaniu nieruchomoœci do sprzeda¿y i technikach home stagingu.",
+                AuthorEmail = "piotr.nowak@betonowezloto.pl",
+                Tags = new List<string> { "sprzeda¿", "homestaging", "remont", "przygotowanie", "wartoœæ" },
+                Content = new List<ContentSection>
+                {
+                    new ContentSection { Type = "paragraph", Text = "Pierwsze wra¿enie ma kluczowe znaczenie przy sprzeda¿y mieszkania. W³aœciwe przygotowanie nieruchomoœci mo¿e znacz¹co zwiêkszyæ jej atrakcyjnoœæ i cenê sprzeda¿y. W tym artykule dowiesz siê, jak profesjonalnie przygotowaæ mieszkanie do prezentacji potencjalnym kupuj¹cym." },
+                    new ContentSection { Type = "heading", Text = "Uporz¹dkowanie i depersonalizacja" },
+                    new ContentSection { Type = "paragraph", Text = "Pierwsze i najwa¿niejsze - pozb¹dŸ siê zbêdnych rzeczy. Mieszkanie powinno byæ przestronne i jasne. Usuñ osobiste zdjêcia, pami¹tki i wszystko, co mo¿e rozpraszaæ uwagê potencjalnych kupuj¹cych." },
+                    new ContentSection { Type = "heading", Text = "Drobne naprawy i malowanie" },
+                    new ContentSection { Type = "paragraph", Text = "Zanim wystawisz mieszkanie na sprzeda¿, wykonaj wszystkie drobne naprawy. Wymieñ zepsute klamki, napraw przeciekaj¹ce krany, pomaluj œciany na neutralne kolory. Te niewielkie inwestycje mog¹ znacz¹co zwiêkszyæ wartoœæ mieszkania." },
+                    new ContentSection { Type = "list", Items = new List<string> 
+                    { 
+                        "Pomaluj œciany na jasne, neutralne kolory",
+                        "Napraw wszystkie widoczne uszkodzenia",
+                        "Wymieñ przestarza³e osprzêt (klamki, kontakty, w³¹czniki)",
+                        "Odœwie¿ fugi w ³azience i kuchni",
+                        "Wymieñ zu¿yte uszczelki w kranach"
+                    }},
+                    new ContentSection { Type = "heading", Text = "Home Staging" },
+                    new ContentSection { Type = "paragraph", Text = "Home staging to sztuka prezentacji nieruchomoœci w najlepszym mo¿liwym œwietle. Odpowiednio dobrane dekoracje, roœliny i oœwietlenie mog¹ ca³kowicie zmieniæ odbiór mieszkania." },
+                    new ContentSection { Type = "quote", Text = "Dobrze wykonany home staging mo¿e zwiêkszyæ cenê sprzeda¿y nawet o 10-15% - inwestycja, która naprawdê siê op³aca!" },
+                    new ContentSection { Type = "heading", Text = "Profesjonalne zdjêcia" },
+                    new ContentSection { Type = "paragraph", Text = "Zainwestuj w profesjonaln¹ sesjê fotograficzn¹. W dzisiejszych czasach wiêkszoœæ potencjalnych kupuj¹cych najpierw przegl¹da oferty online, wiêc wysokiej jakoœci zdjêcia s¹ absolutnie kluczowe." },
+                    new ContentSection { Type = "heading", Text = "Podsumowanie" },
+                    new ContentSection { Type = "paragraph", Text = "Przygotowanie mieszkania do sprzeda¿y wymaga czasu i niewielkich nak³adów finansowych, ale zdecydowanie siê op³aca. Zadbane mieszkanie sprzeda siê szybciej i za lepsz¹ cenê. Jeœli potrzebujesz pomocy w przygotowaniu mieszkania do sprzeda¿y, skontaktuj siê z naszym zespo³em!" }
+                }
+            },
+            new ArticleDetail
+            {
+                Id = 3,
+                Title = "Kredyt Hipoteczny - Wszystko, Co Musisz Wiedzieæ",
+                Excerpt = "Szczegó³owy przewodnik po kredytach hipotecznych w 2024 roku. Rodzaje kredytów, wymagane dokumenty i porady, jak uzyskaæ najlepsze warunki.",
+                Category = "Kredyty",
+                Date = new DateTime(2024, 1, 5),
+                ReadTime = 12,
+                Views = 1523,
+                ImageUrl = "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800",
+                Author = "Magdalena Wójcik",
+                AuthorRole = "Agent",
+                AuthorPhoto = "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200",
+                AuthorBio = "Doœwiadczony agent nieruchomoœci specjalizuj¹cy siê w finansowaniu zakupu. Pomaga klientom w uzyskaniu najkorzystniejszych warunków kredytowych.",
+                AuthorEmail = "magdalena.wojcik@betonowezloto.pl",
+                Tags = new List<string> { "kredyt", "hipoteka", "finansowanie", "bank", "oprocentowanie" },
+                Content = new List<ContentSection>
+                {
+                    new ContentSection { Type = "paragraph", Text = "Kredyt hipoteczny to dla wiêkszoœci z nas jedyna mo¿liwoœæ zakupu w³asnego mieszkania. W tym obszernym przewodniku znajdziesz wszystkie najwa¿niejsze informacje, które pomog¹ Ci zrozumieæ proces kredytowy i wybraæ najlepsz¹ ofertê dla siebie." },
+                    new ContentSection { Type = "heading", Text = "Rodzaje kredytów hipotecznych" },
+                    new ContentSection { Type = "paragraph", Text = "Na polskim rynku dostêpne s¹ g³ównie dwa typy kredytów: ze sta³ym i zmiennym oprocentowaniem. Ka¿dy z nich ma swoje zalety i wady, które warto dok³adnie rozwa¿yæ przed podjêciem decyzji." },
+                    new ContentSection { Type = "list", Items = new List<string> 
+                    { 
+                        "Kredyt ze sta³ym oprocentowaniem - przewidywalne raty przez okreœlony czas",
+                        "Kredyt ze zmiennym oprocentowaniem - ni¿sze pocz¹tkowe oprocentowanie, ale ryzyko wzrostu rat",
+                        "Kredyt mieszany - ³¹czy zalety obu rozwi¹zañ"
+                    }},
+                    new ContentSection { Type = "heading", Text = "Wymagane dokumenty" },
+                    new ContentSection { Type = "paragraph", Text = "Aby uzyskaæ kredyt hipoteczny, musisz przygotowaæ odpowiedni¹ dokumentacjê. Lista mo¿e siê ró¿niæ w zale¿noœci od banku, ale podstawowe dokumenty to:" },
+                    new ContentSection { Type = "list", Items = new List<string> 
+                    { 
+                        "Dowód osobisty",
+                        "Zaœwiadczenie o dochodach",
+                        "Umowa o pracê lub dzia³alnoœæ gospodarcz¹",
+                        "Zeznanie podatkowe (PIT)",
+                        "Wyci¹gi z konta bankowego",
+                        "Dokumenty dotycz¹ce nieruchomoœci"
+                    }},
+                    new ContentSection { Type = "heading", Text = "Zdolnoœæ kredytowa" },
+                    new ContentSection { Type = "paragraph", Text = "Zdolnoœæ kredytowa to maksymalna kwota, jak¹ bank mo¿e Ci po¿yczyæ. Zale¿y ona od Twoich dochodów, wydatków, liczby osób na utrzymaniu i innych zobowi¹zañ finansowych." },
+                    new ContentSection { Type = "quote", Text = "Wk³ad w³asny to nie wszystko - bank sprawdzi równie¿ historiê Twojej zdolnoœci kredytowej i stabilnoœæ zatrudnienia." },
+                    new ContentSection { Type = "heading", Text = "Jak uzyskaæ najlepsze warunki?" },
+                    new ContentSection { Type = "paragraph", Text = "Porównaj oferty kilku banków, negocjuj warunki i nie bój siê pytaæ o dodatkowe korzyœci. Czasem bank mo¿e obni¿yæ mar¿ê lub zaoferowaæ darmowe ubezpieczenie." },
+                    new ContentSection { Type = "heading", Text = "Podsumowanie" },
+                    new ContentSection { Type = "paragraph", Text = "Kredyt hipoteczny to d³ugoletnie zobowi¹zanie, wiêc warto poœwiêciæ czas na dok³adne zapoznanie siê z ofertami i warunkami. Pamiêtaj, ¿e najni¿sze oprocentowanie to nie wszystko - zwróæ uwagê równie¿ na elastycznoœæ kredytu i dodatkowe koszty." }
+                }
+            }
+        };
+
+        Article = articles.FirstOrDefault(a => a.Id == Id);
+    }
+
+    private void LoadRelatedArticles()
+    {
+        // Mock data - w rzeczywistej aplikacji pobierane by³yby artyku³y z tej samej kategorii
+        RelatedArticles = new List<RelatedArticleInfo>
+        {
+            new RelatedArticleInfo
+            {
+                Id = 4,
+                Title = "Inwestycje w Nieruchomoœci - Poradnik dla Pocz¹tkuj¹cych",
+                Excerpt = "Czy warto inwestowaæ w nieruchomoœci? Poznaj ró¿ne strategie inwestycyjne.",
+                Category = "Inwestycje",
+                Date = new DateTime(2023, 12, 28),
+                ImageUrl = "https://images.unsplash.com/photo-1460472178825-e5240623afd5?q=80&w=800"
+            },
+            new RelatedArticleInfo
+            {
+                Id = 5,
+                Title = "Najwa¿niejsze Zmiany w Prawie Nieruchomoœci 2024",
+                Excerpt = "Przegl¹d najwa¿niejszych zmian prawnych dotycz¹cych rynku nieruchomoœci.",
+                Category = "Prawo",
+                Date = new DateTime(2023, 12, 20),
+                ImageUrl = "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=800"
+            },
+            new RelatedArticleInfo
+            {
+                Id = 6,
+                Title = "Home Staging - Sztuka Prezentacji Nieruchomoœci",
+                Excerpt = "Jak profesjonalnie zaprezentowaæ mieszkanie na sprzeda¿ lub wynajem?",
+                Category = "Porady",
+                Date = new DateTime(2023, 12, 15),
+                ImageUrl = "https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=800"
+            }
+        };
+    }
+
+    private void ShareArticle(string platform)
+    {
+        // Implementacja udostêpniania na ró¿nych platformach spo³ecznoœciowych
+        var url = $"https://betonowezloto.pl/porady/{Id}";
+        var title = Article?.Title ?? "";
+        
+        string shareUrl = platform switch
+        {
+            "facebook" => $"https://www.facebook.com/sharer/sharer.php?u={url}",
+            "twitter" => $"https://twitter.com/intent/tweet?url={url}&text={title}",
+            "linkedin" => $"https://www.linkedin.com/sharing/share-offsite/?url={url}",
+            _ => url
+        };
+        
+        // W rzeczywistej aplikacji otworzy³oby to nowe okno z linkiem do udostêpnienia
+        Console.WriteLine($"Sharing on {platform}: {shareUrl}");
+    }
+}
