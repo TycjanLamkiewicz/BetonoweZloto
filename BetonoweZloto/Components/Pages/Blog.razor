@@ -1,15 +1,20 @@
 @page "/porady"
+@using BetonoweZloto.Resources
+@inject LocalizationHelper L
+@inject LanguageService LanguageService
+@rendermode InteractiveServer
+@implements IDisposable
 
-<PageTitle>Porady i Blog - BetonoweZloto.pl</PageTitle>
+<PageTitle>@L.Get(LocalizationResources.BlogPage.Title) - BetonoweZloto.pl</PageTitle>
 
 <section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white py-20">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Porady Ekspertów
+                @L.Get(LocalizationResources.BlogPage.Title)
             </h1>
             <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
-                Praktyczne wskazówki, aktualnoœci z&nbsp;rynku nieruchomoœci i&nbsp;przewodniki dla kupuj¹cych i&nbsp;sprzedaj¹cych
+                @L.Get(LocalizationResources.BlogPage.Subtitle)
             </p>
         </div>
     </div>
@@ -29,18 +34,18 @@
                                  class="w-full h-full object-cover"
                                  loading="eager" />
                             <div class="absolute top-4 left-4 bg-gold-500 text-gray-900 px-4 py-2 rounded-full font-bold text-sm">
-                                Wyró¿niony
+                                @L.Get(LocalizationResources.BlogPage.Featured)
                             </div>
                         </div>
                         <div class="p-8 lg:p-12 flex flex-col justify-center">
                             <div class="flex items-center gap-3 mb-4">
                                 <span class="px-3 py-1 bg-gold-100 text-gold-800 rounded-full text-sm font-semibold">
-                                    @featured.Category
+                                    @GetLocalizedCategory(featured.Category)
                                 </span>
                                 <span class="text-sm text-gray-500">
                                     <time datetime="@featured.Date.ToString("yyyy-MM-dd")">@featured.Date.ToString("dd.MM.yyyy")</time>
                                 </span>
-                                <span class="text-sm text-gray-500">• @featured.ReadTime&nbsp;min</span>
+                                <span class="text-sm text-gray-500">• @featured.ReadTime&nbsp;@L.Get(LocalizationResources.BlogPage.MinRead)</span>
                             </div>
                             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">@featured.Title</h2>
                             <p class="text-lg text-gray-600 mb-6 leading-relaxed">@featured.Excerpt</p>
@@ -56,7 +61,7 @@
                             </div>
                             <a href="/porady/@featured.Id"
                                class="inline-flex items-center px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50 touch-manipulation self-start">
-                                Czytaj wiêcej
+                                @L.Get(LocalizationResources.BlogPage.ReadMore)
                                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                                 </svg>
@@ -78,8 +83,8 @@
                     <svg class="w-24 h-24 text-gray-300 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Brak artyku³ów</h3>
-                    <p class="text-gray-600 mb-8">W tej kategorii nie ma jeszcze artyku³ów</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">@L.Get(LocalizationResources.BlogPage.NoArticles)</h3>
+                    <p class="text-gray-600 mb-8">@L.Get(LocalizationResources.BlogPage.NoArticlesText)</p>
                 </div>
             }
             else
@@ -94,14 +99,14 @@
                                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                      loading="lazy" />
                                 <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold text-gray-900">
-                                    @article.Category
+                                    @GetLocalizedCategory(article.Category)
                                 </div>
                             </div>
                             <div class="p-6 flex-1 flex flex-col">
                                 <div class="flex items-center gap-3 mb-3 text-sm text-gray-500">
                                     <time datetime="@article.Date.ToString("yyyy-MM-dd")">@article.Date.ToString("dd.MM.yyyy")</time>
                                     <span>•</span>
-                                    <span>@article.ReadTime&nbsp;min czytania</span>
+                                    <span>@article.ReadTime&nbsp;@L.Get(LocalizationResources.BlogPage.MinRead)</span>
                                 </div>
                                 <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 flex-grow">@article.Title</h3>
                                 <p class="text-gray-600 mb-4 line-clamp-3">@article.Excerpt</p>
@@ -117,7 +122,7 @@
                                 </div>
                                 <a href="/porady/@article.Id"
                                    class="w-full py-3 border-2 border-gray-900 text-gray-900 font-semibold rounded-lg hover:bg-gray-900 hover:text-white transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900/50 touch-manipulation text-center block">
-                                    Czytaj wiêcej
+                                    @L.Get(LocalizationResources.BlogPage.ReadMore)
                                 </a>
                             </div>
                         </article>
@@ -131,10 +136,10 @@
 <section id="kontakt" class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white" role="region" aria-labelledby="cta-heading">
     <div class="container mx-auto px-4 text-center">
         <h2 id="cta-heading" class="text-4xl md:text-5xl font-bold mb-6">
-            Szukasz Swojego Miejsca na Ziemi?
+            @L.Get(LocalizationResources.HomePage.CtaHeading)
         </h2>
         <p class="text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
-            Skontaktuj siê z&nbsp;nami ju¿ dziœ, a&nbsp;nasi eksperci pomog¹ Ci znaleŸæ idealn¹ nieruchomoœæ
+            @L.Get(LocalizationResources.HomePage.CtaText)
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a href="tel:+48123456789" 
@@ -221,5 +226,27 @@
         };
         
         FilteredArticles = AllArticles.OrderByDescending(a => a.Date).ToList();
+        LanguageService.OnLanguageChanged += OnLanguageChanged;
+    }
+    
+    private string GetLocalizedCategory(string category)
+    {
+        return category switch
+        {
+            "Kupno" => L.Get(LocalizationResources.BlogPage.CategoryPurchase),
+            "Sprzeda¿" => L.Get(LocalizationResources.BlogPage.CategorySale),
+            "Kredyty" => L.Get(LocalizationResources.BlogPage.CategoryLoan),
+            _ => category
+        };
+    }
+    
+    private void OnLanguageChanged()
+    {
+        StateHasChanged();
+    }
+    
+    public void Dispose()
+    {
+        LanguageService.OnLanguageChanged -= OnLanguageChanged;
     }
 }

@@ -1,0 +1,52 @@
+@using BetonoweZloto.Services
+@inject LanguageService LanguageService
+@implements IDisposable
+
+<div class="flex items-center gap-2">
+    <button @onclick='() => ChangeLanguage("pl")'
+            class="px-3 py-1.5 rounded-lg font-medium transition-all @GetButtonClass("pl")"
+            aria-label="Prze³¹cz na jêzyk polski">
+        PL
+    </button>
+    <span class="text-gray-300">|</span>
+    <button @onclick='() => ChangeLanguage("en")'
+            class="px-3 py-1.5 rounded-lg font-medium transition-all @GetButtonClass("en")"
+            aria-label="Switch to English">
+        EN
+    </button>
+</div>
+
+@code {
+    private string currentLang = "pl";
+
+    protected override void OnInitialized()
+    {
+        currentLang = LanguageService.GetCurrentLanguageCode();
+        LanguageService.OnLanguageChanged += OnLanguageChanged;
+    }
+
+    private void ChangeLanguage(string culture)
+    {
+        LanguageService.SetLanguage(culture);
+        currentLang = culture;
+        StateHasChanged();
+    }
+
+    private void OnLanguageChanged()
+    {
+        currentLang = LanguageService.GetCurrentLanguageCode();
+        StateHasChanged();
+    }
+
+    private string GetButtonClass(string lang)
+    {
+        return currentLang == lang
+            ? "bg-gold-500 text-gray-900"
+            : "bg-transparent text-gray-700 hover:bg-gray-100";
+    }
+
+    public void Dispose()
+    {
+        LanguageService.OnLanguageChanged -= OnLanguageChanged;
+    }
+}

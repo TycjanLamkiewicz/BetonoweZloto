@@ -1,15 +1,20 @@
 @page "/kontakt"
+@using BetonoweZloto.Resources
+@inject LocalizationHelper L
+@inject LanguageService LanguageService
+@rendermode InteractiveServer
+@implements IDisposable
 
-<PageTitle>Kontakt - BetonoweZloto.pl</PageTitle>
+<PageTitle>@L.Get(LocalizationResources.ContactPage.Title) - BetonoweZloto.pl</PageTitle>
 
 <section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white py-20">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Skontaktuj Siê z&nbsp;Nami
+                @L.Get(LocalizationResources.ContactPage.Title)
             </h1>
             <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
-                Jesteœmy tutaj, aby pomóc Ci znaleŸæ wymarzon¹ nieruchomoœæ. Napisz lub zadzwoñ!
+                @L.Get(LocalizationResources.ContactPage.Subtitle)
             </p>
         </div>
     </div>
@@ -24,11 +29,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Telefon</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">@L.Get(LocalizationResources.ContactPage.Phone)</h3>
                 <a href="tel:+48123456789" class="text-gold-600 hover:text-gold-700 font-semibold text-lg focus:outline-none focus-visible:underline">
                     +48&nbsp;123&nbsp;456&nbsp;789
                 </a>
-                <p class="text-sm text-gray-600 mt-2">Pon-Pt: 9:00-18:00<br/>Sob: 10:00-14:00</p>
+                <p class="text-sm text-gray-600 mt-2 whitespace-pre-line">@L.Get(LocalizationResources.ContactPage.PhoneHours)</p>
             </div>
             
             <div class="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-lg transition-shadow">
@@ -37,11 +42,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">E-mail</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">@L.Get(LocalizationResources.ContactPage.Email)</h3>
                 <a href="mailto:kontakt@betonowezloto.pl" class="text-gold-600 hover:text-gold-700 font-semibold break-all focus:outline-none focus-visible:underline">
                     kontakt@betonowezloto.pl
                 </a>
-                <p class="text-sm text-gray-600 mt-2">Odpowiadamy w ci¹gu 24h</p>
+                <p class="text-sm text-gray-600 mt-2">@L.Get(LocalizationResources.ContactPage.EmailResponse)</p>
             </div>
             
             <div class="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-lg transition-shadow">
@@ -51,12 +56,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Adres</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">@L.Get(LocalizationResources.ContactPage.Address)</h3>
                 <address class="text-gray-700 not-italic">
                     ul. Wólczañska 215<br />
                     93-005 £ódŸ
                 </address>
-                <p class="text-sm text-gray-600 mt-2">Centrum miasta</p>
+                <p class="text-sm text-gray-600 mt-2">@L.Get(LocalizationResources.ContactPage.AddressLocation)</p>
             </div>
             
             <div class="text-center p-8 bg-gray-50 rounded-2xl hover:shadow-lg transition-shadow">
@@ -65,11 +70,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2">NIP</h3>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">@L.Get(LocalizationResources.ContactPage.NIP)</h3>
                 <p class="text-gray-700 font-semibold text-lg">
                     123-456-78-90
                 </p>
-                <p class="text-sm text-gray-600 mt-2">Numer identyfikacji<br/>podatkowej</p>
+                <p class="text-sm text-gray-600 mt-2 whitespace-pre-line">@L.Get(LocalizationResources.ContactPage.NIPDescription)</p>
             </div>
         </div>
     </div>
@@ -79,12 +84,12 @@
     <div class="container mx-auto px-4">
         <div class="max-w-3xl mx-auto">
             <div class="bg-white rounded-2xl shadow-lg p-8">
-                <h2 class="text-3xl font-bold text-gray-900 mb-6">Wyœlij Wiadomoœæ</h2>
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">@L.Get(LocalizationResources.ContactPage.FormTitle)</h2>
                 <form @onsubmit="HandleSubmit" @onsubmit:preventDefault>
                     <div class="space-y-6">
                         <div>
                             <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">
-                                Imiê i nazwisko <span class="text-red-500">*</span>
+                                @L.Get(LocalizationResources.ContactPage.FormName) <span class="text-red-500">*</span>
                             </label>
                             <input 
                                 type="text" 
@@ -92,7 +97,7 @@
                                 @bind="formData.Name"
                                 required
                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all @(GetFieldErrorClass(nameof(formData.Name)))"
-                                placeholder="Jan Kowalski"
+                                placeholder="@L.Get(LocalizationResources.ContactPage.FormNamePlaceholder)"
                                 aria-required="true"
                                 aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Name))))"
                                 aria-describedby="@(errors.ContainsKey(nameof(formData.Name)) ? "name-error" : null)" />
@@ -104,7 +109,7 @@
                         
                         <div>
                             <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
-                                E-mail <span class="text-red-500">*</span>
+                                @L.Get(LocalizationResources.ContactPage.FormEmail) <span class="text-red-500">*</span>
                             </label>
                             <input 
                                 type="email" 
@@ -112,7 +117,7 @@
                                 @bind="formData.Email"
                                 required
                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all @(GetFieldErrorClass(nameof(formData.Email)))"
-                                placeholder="jan.kowalski@example.com"
+                                placeholder="@L.Get(LocalizationResources.ContactPage.FormEmailPlaceholder)"
                                 aria-required="true"
                                 aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Email))))"
                                 aria-describedby="@(errors.ContainsKey(nameof(formData.Email)) ? "email-error" : null)" />
@@ -124,7 +129,7 @@
                         
                         <div>
                             <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
-                                Telefon <span class="text-red-500">*</span>
+                                @L.Get(LocalizationResources.ContactPage.FormPhone) <span class="text-red-500">*</span>
                             </label>
                             <input 
                                 type="tel" 
@@ -132,7 +137,7 @@
                                 @bind="formData.Phone"
                                 required
                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all @(GetFieldErrorClass(nameof(formData.Phone)))"
-                                placeholder="+48 123 456 789"
+                                placeholder="@L.Get(LocalizationResources.ContactPage.FormPhonePlaceholder)"
                                 aria-required="true"
                                 aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Phone))))"
                                 aria-describedby="@(errors.ContainsKey(nameof(formData.Phone)) ? "phone-error" : null)" />
@@ -144,7 +149,7 @@
                         
                         <div>
                             <label for="subject" class="block text-sm font-semibold text-gray-700 mb-2">
-                                Temat <span class="text-red-500">*</span>
+                                @L.Get(LocalizationResources.ContactPage.FormSubject) <span class="text-red-500">*</span>
                             </label>
                             <select 
                                 id="subject"
@@ -152,18 +157,18 @@
                                 required
                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all appearance-none bg-white cursor-pointer"
                                 aria-required="true">
-                                <option value="">Wybierz temat</option>
-                                <option value="buy">Chcê kupiæ nieruchomoœæ</option>
-                                <option value="sell">Chcê sprzedaæ nieruchomoœæ</option>
-                                <option value="rent">Szukam wynajmu</option>
-                                <option value="valuation">Wycena nieruchomoœci</option>
-                                <option value="other">Inne pytanie</option>
+                                <option value="">@L.Get(LocalizationResources.ContactPage.FormSubjectSelect)</option>
+                                <option value="buy">@L.Get(LocalizationResources.ContactPage.FormSubjectBuy)</option>
+                                <option value="sell">@L.Get(LocalizationResources.ContactPage.FormSubjectSell)</option>
+                                <option value="rent">@L.Get(LocalizationResources.ContactPage.FormSubjectRent)</option>
+                                <option value="valuation">@L.Get(LocalizationResources.ContactPage.FormSubjectValuation)</option>
+                                <option value="other">@L.Get(LocalizationResources.ContactPage.FormSubjectOther)</option>
                             </select>
                         </div>
                         
                         <div>
                             <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">
-                                Wiadomoœæ <span class="text-red-500">*</span>
+                                @L.Get(LocalizationResources.ContactPage.FormMessage) <span class="text-red-500">*</span>
                             </label>
                             <textarea 
                                 id="message"
@@ -171,7 +176,7 @@
                                 required
                                 rows="5"
                                 class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gold-500 focus:ring-4 focus:ring-gold-500/20 transition-all resize-y @(GetFieldErrorClass(nameof(formData.Message)))"
-                                placeholder="Opisz swoje pytanie lub potrzeby"
+                                placeholder="@L.Get(LocalizationResources.ContactPage.FormMessagePlaceholder)"
                                 aria-required="true"
                                 aria-invalid="@(!string.IsNullOrEmpty(errors.GetValueOrDefault(nameof(formData.Message))))"
                                 aria-describedby="@(errors.ContainsKey(nameof(formData.Message)) ? "message-error" : null)"></textarea>
@@ -190,7 +195,7 @@
                                 class="w-5 h-5 text-gold-500 border-gray-300 rounded focus:ring-4 focus:ring-gold-500/20 mt-1 cursor-pointer"
                                 aria-required="true" />
                             <label for="consent" class="ml-3 text-sm text-gray-700 cursor-pointer">
-                                Wyra¿am zgodê na przetwarzanie moich danych osobowych zgodnie z&nbsp;<a href="/polityka-prywatnosci" class="text-gold-600 hover:text-gold-700 underline focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 rounded">polityk¹ prywatnoœci</a> <span class="text-red-500">*</span>
+                                @L.Get(LocalizationResources.ContactPage.FormConsent) <span class="text-red-500">*</span>
                             </label>
                         </div>
                         
@@ -205,12 +210,12 @@
                                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
-                                    Wysy³anie...
+                                    @L.Get(LocalizationResources.ContactPage.FormSending)
                                 </span>
                             }
                             else
                             {
-                                <span>Wyœlij wiadomoœæ</span>
+                                <span>@L.Get(LocalizationResources.ContactPage.FormSubmit)</span>
                             }
                         </button>
                     </div>
@@ -244,8 +249,8 @@
 <section class="py-20 bg-white">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Obserwuj Nas w Social Media</h2>
-            <p class="text-xl text-gray-600 mb-12">B¹dŸ na bie¿¹co z nowymi ofertami, poradami i aktualnoœciami</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">@L.Get(LocalizationResources.ContactPage.SocialTitle)</h2>
+            <p class="text-xl text-gray-600 mb-12">@L.Get(LocalizationResources.ContactPage.SocialSubtitle)</p>
             
             <div class="flex flex-wrap justify-center gap-6">
                 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
@@ -296,6 +301,11 @@
     private string submitMessage = "";
     private bool submitSuccess = false;
     
+    protected override void OnInitialized()
+    {
+        LanguageService.OnLanguageChanged += OnLanguageChanged;
+    }
+    
     private string GetFieldErrorClass(string fieldName)
     {
         return errors.ContainsKey(fieldName) ? "border-red-500 focus:border-red-500" : "";
@@ -307,31 +317,31 @@
         submitMessage = "";
         
         if (string.IsNullOrWhiteSpace(formData.Name))
-            errors[nameof(formData.Name)] = "Pole wymagane";
+            errors[nameof(formData.Name)] = L.Get(LocalizationResources.ContactPage.FormRequired);
             
         if (string.IsNullOrWhiteSpace(formData.Email))
-            errors[nameof(formData.Email)] = "Pole wymagane";
+            errors[nameof(formData.Email)] = L.Get(LocalizationResources.ContactPage.FormRequired);
         else if (!IsValidEmail(formData.Email))
-            errors[nameof(formData.Email)] = "Nieprawid³owy adres email";
+            errors[nameof(formData.Email)] = L.Get(LocalizationResources.ContactPage.FormInvalidEmail);
             
         if (string.IsNullOrWhiteSpace(formData.Phone))
-            errors[nameof(formData.Phone)] = "Pole wymagane";
+            errors[nameof(formData.Phone)] = L.Get(LocalizationResources.ContactPage.FormRequired);
             
         if (string.IsNullOrWhiteSpace(formData.Message))
-            errors[nameof(formData.Message)] = "Pole wymagane";
+            errors[nameof(formData.Message)] = L.Get(LocalizationResources.ContactPage.FormRequired);
         else if (formData.Message.Length < 10)
-            errors[nameof(formData.Message)] = "Wiadomoœæ jest zbyt krótka (min. 10 znaków)";
+            errors[nameof(formData.Message)] = L.Get(LocalizationResources.ContactPage.FormMessageTooShort);
             
         if (!formData.GdprConsent)
         {
-            submitMessage = "Musisz wyraziæ zgodê na przetwarzanie danych osobowych";
+            submitMessage = L.Get(LocalizationResources.ContactPage.FormConsentRequired);
             submitSuccess = false;
             return;
         }
         
         if (errors.Any())
         {
-            submitMessage = "Proszê poprawiæ b³êdy w formularzu";
+            submitMessage = L.Get(LocalizationResources.ContactPage.FormError);
             submitSuccess = false;
             return;
         }
@@ -343,7 +353,7 @@
         
         isSubmitting = false;
         submitSuccess = true;
-        submitMessage = "Dziêkujemy za wiadomoœæ! Skontaktujemy siê z Tob¹ w ci¹gu 24 godzin.";
+        submitMessage = L.Get(LocalizationResources.ContactPage.FormSuccess);
         
         formData = new ContactFormData();
         StateHasChanged();
@@ -360,5 +370,15 @@
         {
             return false;
         }
+    }
+    
+    private void OnLanguageChanged()
+    {
+        StateHasChanged();
+    }
+    
+    public void Dispose()
+    {
+        LanguageService.OnLanguageChanged -= OnLanguageChanged;
     }
 }

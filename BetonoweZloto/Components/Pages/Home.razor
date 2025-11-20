@@ -1,4 +1,8 @@
 ﻿@page "/"
+@using BetonoweZloto.Resources
+@inject LocalizationHelper L
+@inject LanguageService LanguageService
+@implements IDisposable
 
 <PageTitle>BetonoweZłoto.pl - Profesjonalne Biuro Obrotu Nieruchomościami</PageTitle>
 
@@ -14,17 +18,17 @@
     <div class="relative z-20 container mx-auto px-4 h-full flex items-center">
         <div class="max-w-3xl text-white">
             <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                Znajdź swoją 
-                <span class="text-gold-400 block">nieruchomość</span>
+                @L.Get(LocalizationResources.HomePage.Title)
+                <span class="text-gold-400 block">@L.Get(LocalizationResources.HomePage.TitleHighlight)</span>
             </h1>
             <p class="text-xl md:text-2xl mb-8 text-gray-200 leading-relaxed">
-                Profesjonalne doradztwo i kompleksowa obsługa
+                @L.Get(LocalizationResources.HomePage.Subtitle)
             </p>
             <div class="flex flex-col sm:flex-row gap-4">
                 <a href="/oferty" 
                    class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-lg bg-gold-500 text-gray-900 hover:bg-gold-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gold-500/50 touch-manipulation"
                    aria-label="Zobacz nasze oferty nieruchomości">
-                    Zobacz oferty
+                    @L.Get(LocalizationResources.HomePage.ViewOffers)
                     <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
@@ -32,7 +36,7 @@
                 <a href="#kontakt" 
                    class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold rounded-lg bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 transition-all duration-300 border-2 border-white/30 focus:outline-none focus:ring-4 focus:ring-white/50 touch-manipulation"
                    aria-label="Skontaktuj się z nami">
-                    Skontaktuj się
+                    @L.Get(LocalizationResources.HomePage.ContactUs)
                 </a>
             </div>
         </div>
@@ -51,11 +55,10 @@
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center mb-16">
             <h2 id="about-heading" class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Twój Partner w Świecie Nieruchomości
+                @L.Get(LocalizationResources.HomePage.AboutHeading)
             </h2>
             <p class="text-xl text-gray-600 leading-relaxed">
-                BetonoweZloto.pl to doświadczone biuro obrotu nieruchomościami, które od lat z&nbsp;sukcesem 
-                pomaga klientom znaleźć wymarzone mieszkania, domy i&nbsp;lokale komercyjne.
+                @L.Get(LocalizationResources.HomePage.AboutText)
             </p>
         </div>
         
@@ -66,10 +69,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Wieloletnie Doświadczenie</h3>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">@L.Get(LocalizationResources.HomePage.ExperienceTitle)</h3>
                 <p class="text-gray-600 leading-relaxed">
-                    Ponad 15&nbsp;lat na rynku nieruchomości. Setki zadowolonych klientów i&nbsp;pomyślnie 
-                    zakończonych transakcji.
+                    @L.Get(LocalizationResources.HomePage.ExperienceText)
                 </p>
             </div>
             
@@ -79,10 +81,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Profesjonalny Zespół</h3>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">@L.Get(LocalizationResources.HomePage.TeamTitle)</h3>
                 <p class="text-gray-600 leading-relaxed">
-                    Zespół ekspertów z&nbsp;pasją i&nbsp;zaangażowaniem, którzy dopasują ofertę do Twoich potrzeb 
-                    i&nbsp;budżetu.
+                    @L.Get(LocalizationResources.HomePage.TeamText)
                 </p>
             </div>
             
@@ -92,10 +93,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-900 mb-4">Szeroka Oferta</h3>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">@L.Get(LocalizationResources.HomePage.PortfolioTitle)</h3>
                 <p class="text-gray-600 leading-relaxed">
-                    Mieszkania, domy, lokale użytkowe w&nbsp;najlepszych lokalizacjach. Znajdziemy idealną 
-                    nieruchomość dla Ciebie.
+                    @L.Get(LocalizationResources.HomePage.PortfolioText)
                 </p>
             </div>
         </div>
@@ -106,10 +106,10 @@
     <div class="container mx-auto px-4">
         <div class="text-center mb-16">
             <h2 id="properties-heading" class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Wyróżnione Oferty
+                @L.Get(LocalizationResources.HomePage.FeaturedHeading)
             </h2>
             <p class="text-xl text-gray-600">
-                Sprawdź nasze najnowsze i&nbsp;najbardziej atrakcyjne nieruchomości
+                @L.Get(LocalizationResources.HomePage.FeaturedSubheading)
             </p>
         </div>
         
@@ -142,19 +142,19 @@
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
                                 </svg>
-                                <span>@property.Area&nbsp;m²</span>
+                                <span>@property.Area&nbsp;@L.Get(LocalizationResources.Common.Area)</span>
                             </div>
                             <div class="flex items-center">
                                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                                 </svg>
-                                <span>@property.Rooms&nbsp;pokoje</span>
+                                <span>@property.Rooms&nbsp;@L.Get(LocalizationResources.Common.Rooms)</span>
                             </div>
                         </div>
                         <button class="w-full bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors duration-300 focus:outline-none focus:ring-4 focus:ring-gray-900/50 touch-manipulation"
                                 onclick="@($"window.location.href='/oferty/{property.Id}'")"
                                 aria-label="Zobacz szczegóły oferty @property.Title">
-                            Zobacz szczegóły
+                            @L.Get(LocalizationResources.SearchPage.ViewDetails)
                         </button>
                     </div>
                 </article>
@@ -165,7 +165,7 @@
             <a href="/oferty" 
                class="inline-flex items-center px-8 py-4 text-lg font-semibold rounded-lg bg-gold-500 text-gray-900 hover:bg-gold-400 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gold-500/50 touch-manipulation"
                aria-label="Zobacz wszystkie dostępne oferty">
-                Zobacz wszystkie oferty
+                @L.Get(LocalizationResources.HomePage.ViewAllOffers)
                 <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                 </svg>
@@ -177,10 +177,10 @@
 <section id="kontakt" class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white" role="region" aria-labelledby="cta-heading">
     <div class="container mx-auto px-4 text-center">
         <h2 id="cta-heading" class="text-4xl md:text-5xl font-bold mb-6">
-            Szukasz Swojego Miejsca na Ziemi?
+            @L.Get(LocalizationResources.HomePage.CtaHeading)
         </h2>
         <p class="text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
-            Skontaktuj się z&nbsp;nami już dziś, a&nbsp;nasi eksperci pomogą Ci znaleźć idealną nieruchomość
+            @L.Get(LocalizationResources.HomePage.CtaText)
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a href="tel:+48123456789" 
@@ -278,4 +278,19 @@
             ImageUrl = "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=800"
         }
     };
+
+    protected override void OnInitialized()
+    {
+        LanguageService.OnLanguageChanged += OnLanguageChanged;
+    }
+
+    private void OnLanguageChanged()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        LanguageService.OnLanguageChanged -= OnLanguageChanged;
+    }
 }

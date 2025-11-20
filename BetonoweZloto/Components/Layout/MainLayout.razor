@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using BetonoweZloto.Components.Shared
+@using BetonoweZloto.Resources
+@inject LocalizationHelper L
 
 <div class="min-h-screen flex flex-col">
     <nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm" role="navigation" aria-label="Main navigation">
@@ -12,19 +15,22 @@
                 
                 <div class="hidden md:flex items-center space-x-1">
                     <a href="/" class="px-4 py-2 text-gray-700 hover:text-gold-600 font-medium rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500" aria-current="page">
-                        Strona główna
+                        @L.Get(LocalizationResources.Navigation.Home)
                     </a>
                     <a href="/oferty" class="px-4 py-2 text-gray-700 hover:text-gold-600 font-medium rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500">
-                        Wyszukiwarka
+                        @L.Get(LocalizationResources.Navigation.Search)
                     </a>
                     <a href="/o-nas" class="px-4 py-2 text-gray-700 hover:text-gold-600 font-medium rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500">
-                        O nas
+                        @L.Get(LocalizationResources.Navigation.About)
                     </a>
                     <a href="/porady" class="px-4 py-2 text-gray-700 hover:text-gold-600 font-medium rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500">
-                        Porady
+                        @L.Get(LocalizationResources.Navigation.Blog)
                     </a>
+                    <div class="ml-2">
+                        <LanguageSwitcher />
+                    </div>
                     <a href="/kontakt" class="ml-4 px-6 py-3 bg-gold-500 text-gray-900 font-semibold rounded-lg hover:bg-gold-400 transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-gold-500/50 touch-manipulation">
-                        Kontakt
+                        @L.Get(LocalizationResources.Navigation.Contact)
                     </a>
                 </div>
                 
@@ -43,19 +49,22 @@
         <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 bg-white">
             <div class="container mx-auto px-4 py-4 space-y-2">
                 <a href="/" class="block px-4 py-3 text-gray-700 hover:text-gold-600 hover:bg-gray-50 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500">
-                    Strona główna
+                    @L.Get(LocalizationResources.Navigation.Home)
                 </a>
                 <a href="/oferty" class="block px-4 py-3 text-gray-700 hover:text-gold-600 hover:bg-gray-50 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500">
-                    Wyszukiwarka
+                    @L.Get(LocalizationResources.Navigation.Search)
                 </a>
                 <a href="/o-nas" class="block px-4 py-3 text-gray-700 hover:text-gold-600 hover:bg-gray-50 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500">
-                    O nas
+                    @L.Get(LocalizationResources.Navigation.About)
                 </a>
                 <a href="/porady" class="block px-4 py-3 text-gray-700 hover:text-gold-600 hover:bg-gray-50 rounded-lg font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500">
-                    Porady
+                    @L.Get(LocalizationResources.Navigation.Blog)
                 </a>
+                <div class="px-4 py-3">
+                    <LanguageSwitcher />
+                </div>
                 <a href="/kontakt" class="block px-4 py-3 bg-gold-500 text-gray-900 font-semibold rounded-lg hover:bg-gold-400 transition-colors text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-500">
-                    Kontakt
+                    @L.Get(LocalizationResources.Navigation.Contact)
                 </a>
             </div>
         </div>
@@ -73,43 +82,43 @@
                         <span class="text-xl font-bold">BetonoweZloto.pl</span>
                     </div>
                     <p class="text-gray-400 leading-relaxed">
-                        Profesjonalne biuro obrotu nieruchomościami. Pomagamy znaleźć wymarzone miejsce do życia.
+                        @L.Get(LocalizationResources.Footer.Description)
                     </p>
                 </div>
                 
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Szybkie linki</h3>
+                    <h3 class="text-lg font-semibold mb-4">@L.Get(LocalizationResources.Footer.QuickLinks)</h3>
                     <ul class="space-y-2">
                         <li>
                             <a href="/" class="text-gray-400 hover:text-gold-400 transition-colors focus:outline-none focus-visible:underline">
-                                Strona główna
+                                @L.Get(LocalizationResources.Navigation.Home)
                             </a>
                         </li>
                         <li>
                             <a href="/oferty" class="text-gray-400 hover:text-gold-400 transition-colors focus:outline-none focus-visible:underline">
-                                Wyszukiwarka ofert
+                                @L.Get(LocalizationResources.Footer.SearchOffers)
                             </a>
                         </li>
                         <li>
                             <a href="/o-nas" class="text-gray-400 hover:text-gold-400 transition-colors focus:outline-none focus-visible:underline">
-                                O nas
+                                @L.Get(LocalizationResources.Navigation.About)
                             </a>
                         </li>
                         <li>
                             <a href="/porady" class="text-gray-400 hover:text-gold-400 transition-colors focus:outline-none focus-visible:underline">
-                                Porady i blog
+                                @L.Get(LocalizationResources.Footer.BlogAdvice)
                             </a>
                         </li>
                         <li>
                             <a href="/kontakt" class="text-gray-400 hover:text-gold-400 transition-colors focus:outline-none focus-visible:underline">
-                                Kontakt
+                                @L.Get(LocalizationResources.Footer.Contact)
                             </a>
                         </li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Kontakt</h3>
+                    <h3 class="text-lg font-semibold mb-4">@L.Get(LocalizationResources.Footer.Contact)</h3>
                     <ul class="space-y-3 text-gray-400">
                         <li class="flex items-start">
                             <svg class="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -170,7 +179,7 @@
                 </div>
                 
                 <div class="text-center text-gray-400">
-                    <p>&copy; 2025 BetonoweZloto.pl.</p>
+                    <p>@L.Get(LocalizationResources.Footer.Copyright)</p>
                 </div>
             </div>
         </div>

@@ -1,14 +1,18 @@
 ﻿@page "/oferty"
 @using System.Globalization
+@using BetonoweZloto.Resources
+@inject LocalizationHelper L
+@inject LanguageService LanguageService
 @rendermode InteractiveServer
+@implements IDisposable
 
-<PageTitle>Wyszukiwarka Ofert - BetonoweZloto.pl</PageTitle>
+<PageTitle>@L.Get(LocalizationResources.SearchPage.Title) - BetonoweZloto.pl</PageTitle>
 
 <div class="bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white py-20">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Znajdź Nieruchomość</h1>
-            <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">Przeszukaj naszą bazę, aby znaleźć idealne miejsce dla siebie.</p>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">@L.Get(LocalizationResources.SearchPage.Title)</h1>
+            <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">@L.Get(LocalizationResources.SearchPage.Subtitle)</p>
         </div>
     </div>
 </div>
@@ -17,18 +21,18 @@
     <div class="flex flex-col lg:flex-row gap-8">
         <aside class="w-full lg:w-1/4">
             <div class="bg-white p-6 rounded-xl shadow-lg sticky top-24 border border-gray-100">
-                <h2 class="text-xl font-bold mb-6 pb-2 border-b border-gray-200">Filtry</h2>
+                <h2 class="text-xl font-bold mb-6 pb-2 border-b border-gray-200">@L.Get(LocalizationResources.SearchPage.Filters)</h2>
 
                 <div class="space-y-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Lokalizacja lub słowo kluczowe</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">@L.Get(LocalizationResources.SearchPage.Location)</label>
                         <div class="relative">
                             <input @bind="SearchQuery"
                                    @bind:event="oninput"
                                    @onkeydown="@EnterKeyHandler"
                                    type="text"
                                    class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gold-500 focus:border-transparent outline-none transition-all"
-                                   placeholder="np. Warszawa..." />
+                                   placeholder="@L.Get(LocalizationResources.SearchPage.LocationPlaceholder)" />
                             <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
@@ -36,25 +40,25 @@
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Typ nieruchomości</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">@L.Get(LocalizationResources.SearchPage.PropertyType)</label>
                         <select @bind="SelectedType" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gold-500 outline-none cursor-pointer">
-                            <option value="">Wszystkie</option>
-                            <option value="Mieszkanie">Mieszkanie</option>
-                            <option value="Dom">Dom</option>
-                            <option value="Lokal">Lokal użytkowy</option>
+                            <option value="">@L.Get(LocalizationResources.SearchPage.AllTypes)</option>
+                            <option value="Mieszkanie">@L.Get(LocalizationResources.SearchPage.Apartment)</option>
+                            <option value="Dom">@L.Get(LocalizationResources.SearchPage.House)</option>
+                            <option value="Lokal">@L.Get(LocalizationResources.SearchPage.Commercial)</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Cena maksymalna (zł)</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">@L.Get(LocalizationResources.SearchPage.MaxPrice)</label>
                         <input @bind="MaxPrice"
                                type="number"
                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-gold-500 outline-none"
-                               placeholder="Bez limitu" />
+                               placeholder="@L.Get(LocalizationResources.SearchPage.NoLimit)" />
                     </div>
 
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Liczba pokoi (dokładnie)</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">@L.Get(LocalizationResources.SearchPage.Rooms)</label>
                         <div class="flex gap-2">
                             @for (int i = 1; i <= 4; i++)
                             {
@@ -74,11 +78,11 @@
 
                     <button @onclick="FilterProperties"
                             class="w-full bg-gray-900 text-white py-3 rounded-lg font-bold hover:bg-gold-600 transition-all shadow-md mt-4 focus:outline-none focus:ring-4 focus:ring-gold-500/50 active:scale-95">
-                        Filtruj Wyniki
+                        @L.Get(LocalizationResources.SearchPage.FilterButton)
                     </button>
 
                     <button @onclick="ResetFilters" class="w-full text-sm text-gray-500 hover:text-gold-600 underline decoration-dotted">
-                        Wyczyść wszystkie filtry
+                        @L.Get(LocalizationResources.SearchPage.ClearFilters)
                     </button>
                 </div>
             </div>
@@ -86,7 +90,7 @@
 
         <main class="w-full lg:w-3/4">
             <div class="mb-6 flex justify-between items-center bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-                <p class="text-gray-600">Znaleziono ofert: <span class="font-bold text-gray-900">@FilteredProperties.Count</span></p>
+                <p class="text-gray-600">@L.Get(LocalizationResources.SearchPage.ResultsCount) <span class="font-bold text-gray-900">@FilteredProperties.Count</span></p>
             </div>
 
             @if (FilteredProperties.Any())
@@ -108,21 +112,21 @@
                             </div>
                             <div class="p-5 flex-1 flex flex-col">
                                 <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-gold-600 transition-colors">@property.Title</h3>
-                                <p class="text-gold-600 font-bold text-2xl mb-4">@property.Price.ToString("N0", new CultureInfo("pl-PL")) zł</p>
+                                <p class="text-gold-600 font-bold text-2xl mb-4">@property.Price.ToString("N0", new CultureInfo("pl-PL")) @L.Get(LocalizationResources.Common.Currency)</p>
 
                                 <div class="grid grid-cols-2 gap-y-2 gap-x-4 mb-6 text-gray-600 text-sm border-t border-b border-gray-100 py-4">
                                     <div class="flex items-center">
                                         <svg class="w-5 h-5 mr-2 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
-                                        @property.Area m²
+                                        @property.Area @L.Get(LocalizationResources.Common.Area)
                                     </div>
                                     <div class="flex items-center">
                                         <svg class="w-5 h-5 mr-2 text-gold-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
-                                        @property.Rooms pok.
+                                        @property.Rooms @L.Get(LocalizationResources.Common.RoomsShort)
                                     </div>
                                 </div>
 
                                 <a href="/oferty/@property.Id" class="w-full mt-auto bg-gray-50 text-gray-900 border border-gray-200 py-3 rounded-lg font-semibold hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-gray-200 text-center block">
-                                    Zobacz szczegóły
+                                    @L.Get(LocalizationResources.SearchPage.ViewDetails)
                                 </a>
                             </div>
                         </article>
@@ -135,10 +139,10 @@
                     <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Brak wyników wyszukiwania</h3>
-                    <p class="text-gray-500 max-w-md mx-auto mb-8">Nie znaleźliśmy ofert spełniających Twoje kryteria. Spróbuj zmienić parametry wyszukiwania lub wyczyść filtry.</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">@L.Get(LocalizationResources.SearchPage.NoResults)</h3>
+                    <p class="text-gray-500 max-w-md mx-auto mb-8">@L.Get(LocalizationResources.SearchPage.NoResultsText)</p>
                     <button @onclick="ResetFilters" class="inline-flex items-center px-6 py-3 rounded-lg bg-gold-500 text-gray-900 font-bold hover:bg-gold-400 transition-colors shadow-md">
-                        Wyczyść filtry
+                        @L.Get(LocalizationResources.SearchPage.ClearFilters)
                         <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
                     </button>
                 </div>
@@ -150,10 +154,10 @@
 <section id="kontakt" class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white" role="region" aria-labelledby="cta-heading">
     <div class="container mx-auto px-4 text-center">
         <h2 id="cta-heading" class="text-4xl md:text-5xl font-bold mb-6">
-            Szukasz Swojego Miejsca na Ziemi?
+            @L.Get(LocalizationResources.HomePage.CtaHeading)
         </h2>
         <p class="text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
-            Skontaktuj się z&nbsp;nami już dziś, a&nbsp;nasi eksperci pomogą Ci znaleźć idealną nieruchomość
+            @L.Get(LocalizationResources.HomePage.CtaText)
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a href="tel:+48123456789" 
@@ -213,6 +217,7 @@
         };
 
         FilteredProperties = new List<PropertyListing>(AllProperties);
+        LanguageService.OnLanguageChanged += OnLanguageChanged;
     }
 
     private void EnterKeyHandler(KeyboardEventArgs e)
@@ -265,5 +270,15 @@
         MaxPrice = null;
         TargetRooms = 0;
         FilteredProperties = new List<PropertyListing>(AllProperties);
+    }
+
+    private void OnLanguageChanged()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        LanguageService.OnLanguageChanged -= OnLanguageChanged;
     }
 }

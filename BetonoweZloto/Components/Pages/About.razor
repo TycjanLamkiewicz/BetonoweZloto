@@ -1,15 +1,20 @@
 @page "/o-nas"
+@using BetonoweZloto.Resources
+@inject LocalizationHelper L
+@inject LanguageService LanguageService
+@rendermode InteractiveServer
+@implements IDisposable
 
-<PageTitle>O nas - BetonoweZloto.pl</PageTitle>
+<PageTitle>@L.Get(LocalizationResources.AboutPage.Title) - BetonoweZloto.pl</PageTitle>
 
 <section class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white py-20">
     <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Poznaj Nasz Zespó³
+                @L.Get(LocalizationResources.AboutPage.Title)
             </h1>
             <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
-                Pasja, doœwiadczenie i&nbsp;zaanga¿owanie w&nbsp;s³u¿bie Twoim marzeniom o&nbsp;idealnym domu
+                @L.Get(LocalizationResources.AboutPage.Subtitle)
             </p>
         </div>
     </div>
@@ -20,33 +25,21 @@
         <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
                 <div>
-                    <h2 class="text-4xl font-bold text-gray-900 mb-6">Nasza Historia</h2>
+                    <h2 class="text-4xl font-bold text-gray-900 mb-6">@L.Get(LocalizationResources.AboutPage.HistoryTitle)</h2>
                     <div class="space-y-4 text-gray-600 leading-relaxed">
-                        <p>
-                            BetonoweZloto.pl powsta³o w&nbsp;2009 roku z&nbsp;prostej wizji: pomóc ludziom znaleŸæ 
-                            wymarzone miejsce do ¿ycia. Od tamtej pory przeszliœmy d³ug¹ drogê, staj¹c siê jednym 
-                            z&nbsp;najbardziej zaufanych biur nieruchomoœci w&nbsp;Polsce.
-                        </p>
-                        <p>
-                            Przez ponad 15&nbsp;lat dzia³alnoœci pomogliœmy setkom rodzin znaleŸæ ich wymarzone
-                            miejsce, które mog¹ nazwaæ domem. Nasze doœwiadczenie obejmuje sprzeda¿  
-                            mieszkañ, domów oraz lokali u¿ytkowych w&nbsp;najwiêkszych miastach Polski.
-                        </p>
-                        <p>
-                            Nasz sukces opiera siê na trzech filarach: profesjonalizmie, uczciwoœci i&nbsp;indywidualnym 
-                            podejœciu do ka¿dego klienta. Wierzymy, ¿e kupno lub sprzeda¿ nieruchomoœci to jedna 
-                            z&nbsp;najwa¿niejszych decyzji w&nbsp;¿yciu, dlatego traktujemy ka¿d¹ transakcjê z&nbsp;najwy¿sz¹ starannoœci¹.
-                        </p>
+                        <p>@L.Get(LocalizationResources.AboutPage.HistoryText1)</p>
+                        <p>@L.Get(LocalizationResources.AboutPage.HistoryText2)</p>
+                        <p>@L.Get(LocalizationResources.AboutPage.HistoryText3)</p>
                     </div>
                 </div>
                 <div class="relative">
                     <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=800" 
-                         alt="Nowoczesne biuro nieruchomoœci" 
+                         alt="@L.Get(LocalizationResources.AboutPage.HistoryTitle)" 
                          class="rounded-2xl shadow-2xl w-full h-96 object-cover"
                          loading="lazy" />
                     <div class="absolute -bottom-6 -left-6 bg-gold-500 text-gray-900 p-6 rounded-xl shadow-xl">
                         <div class="text-4xl font-bold">15+</div>
-                        <div class="text-sm font-semibold">lat doœwiadczenia</div>
+                        <div class="text-sm font-semibold">@L.Get(LocalizationResources.AboutPage.ExperienceYears)</div>
                     </div>
                 </div>
             </div>
@@ -54,19 +47,19 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
                 <div class="text-center p-6 bg-gray-50 rounded-xl">
                     <div class="text-4xl font-bold text-gold-600 mb-2">500+</div>
-                    <div class="text-gray-700 font-medium">Zadowolonych klientów</div>
+                    <div class="text-gray-700 font-medium">@L.Get(LocalizationResources.AboutPage.StatsClients)</div>
                 </div>
                 <div class="text-center p-6 bg-gray-50 rounded-xl">
                     <div class="text-4xl font-bold text-gold-600 mb-2">800+</div>
-                    <div class="text-gray-700 font-medium">Sprzedanych nieruchomoœci</div>
+                    <div class="text-gray-700 font-medium">@L.Get(LocalizationResources.AboutPage.StatsProperties)</div>
                 </div>
                 <div class="text-center p-6 bg-gray-50 rounded-xl">
                     <div class="text-4xl font-bold text-gold-600 mb-2">15</div>
-                    <div class="text-gray-700 font-medium">Lat na rynku</div>
+                    <div class="text-gray-700 font-medium">@L.Get(LocalizationResources.AboutPage.StatsYears)</div>
                 </div>
                 <div class="text-center p-6 bg-gray-50 rounded-xl">
                     <div class="text-4xl font-bold text-gold-600 mb-2">98%</div>
-                    <div class="text-gray-700 font-medium">Rekomendacji</div>
+                    <div class="text-gray-700 font-medium">@L.Get(LocalizationResources.AboutPage.StatsRecommendations)</div>
                 </div>
             </div>
         </div>
@@ -76,8 +69,8 @@
 <section class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-bold text-gray-900 text-center mb-4">Nasze Wartoœci</h2>
-            <p class="text-xl text-gray-600 text-center mb-16">Fundamenty, na których budujemy zaufanie</p>
+            <h2 class="text-4xl font-bold text-gray-900 text-center mb-4">@L.Get(LocalizationResources.AboutPage.ValuesTitle)</h2>
+            <p class="text-xl text-gray-600 text-center mb-16">@L.Get(LocalizationResources.AboutPage.ValuesSubtitle)</p>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
@@ -86,10 +79,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Zaufanie</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Uczciwoœæ i&nbsp;transparentnoœæ w&nbsp;ka¿dej transakcji.
-                    </p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">@L.Get(LocalizationResources.AboutPage.TrustTitle)</h3>
+                    <p class="text-gray-600 leading-relaxed">@L.Get(LocalizationResources.AboutPage.TrustText)</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
@@ -98,11 +89,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Profesjonalizm</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Oferujemy kompleksow¹ obs³ugê 
-                        na najwy¿szym poziomie.
-                    </p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">@L.Get(LocalizationResources.AboutPage.ProfessionalismTitle)</h3>
+                    <p class="text-gray-600 leading-relaxed">@L.Get(LocalizationResources.AboutPage.ProfessionalismText)</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
@@ -111,10 +99,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Pasja</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Kochamy to, co robimy.
-                    </p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">@L.Get(LocalizationResources.AboutPage.PassionTitle)</h3>
+                    <p class="text-gray-600 leading-relaxed">@L.Get(LocalizationResources.AboutPage.PassionText)</p>
                 </div>
             </div>
         </div>
@@ -124,8 +110,8 @@
 <section class="py-20 bg-white">
     <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-bold text-gray-900 text-center mb-4">Nasz Zespó³</h2>
-            <p class="text-xl text-gray-600 text-center mb-16">Poznaj ekspertów, którzy pomog¹ Ci znaleŸæ wymarzon¹ nieruchomoœæ</p>
+            <h2 class="text-4xl font-bold text-gray-900 text-center mb-4">@L.Get(LocalizationResources.AboutPage.TeamTitle)</h2>
+            <p class="text-xl text-gray-600 text-center mb-16">@L.Get(LocalizationResources.AboutPage.TeamSubtitle)</p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach (var agent in TeamMembers)
@@ -166,14 +152,14 @@
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                     </svg>
-                                    @agent.ExperienceYears&nbsp;lat
+                                    @agent.ExperienceYears&nbsp;@L.Get(LocalizationResources.AboutPage.YearsShort)
                                 </span>
                                 <span class="text-gray-300">|</span>
                                 <span class="flex items-center">
                                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                                     </svg>
-                                    @agent.PropertiesSold+ ofert
+                                    @agent.PropertiesSold+&nbsp;@L.Get(LocalizationResources.AboutPage.OffersShort)
                                 </span>
                             </div>
                         </div>
@@ -187,10 +173,10 @@
 <section class="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gold-900 text-white">
     <div class="container mx-auto px-4 text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-6">
-            Szukasz Swojego Miejsca na Ziemi?
+            @L.Get(LocalizationResources.HomePage.CtaHeading)
         </h2>
         <p class="text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
-            Skontaktuj siê z&nbsp;nami ju¿ dziœ, a&nbsp;nasi eksperci pomog¹ Ci znaleŸæ idealn¹ nieruchomoœæ
+            @L.Get(LocalizationResources.HomePage.CtaText)
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a href="tel:+48123456789" 
@@ -262,4 +248,19 @@
             PropertiesSold = 120
         }
     };
+    
+    protected override void OnInitialized()
+    {
+        LanguageService.OnLanguageChanged += OnLanguageChanged;
+    }
+    
+    private void OnLanguageChanged()
+    {
+        StateHasChanged();
+    }
+    
+    public void Dispose()
+    {
+        LanguageService.OnLanguageChanged -= OnLanguageChanged;
+    }
 }
