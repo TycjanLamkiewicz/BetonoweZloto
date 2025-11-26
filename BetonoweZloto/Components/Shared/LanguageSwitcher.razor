@@ -1,6 +1,7 @@
 @using BetonoweZloto.Services
 @inject LanguageService LanguageService
 @implements IDisposable
+@rendermode InteractiveServer
 
 <div class="flex items-center gap-2">
     <button @onclick='() => ChangeLanguage("pl")'

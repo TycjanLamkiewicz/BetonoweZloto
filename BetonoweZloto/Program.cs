@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Add language services
+// Add language services - both as Singleton for state consistency
 builder.Services.AddSingleton<LanguageService>();
-builder.Services.AddScoped<LocalizationHelper>();
+builder.Services.AddSingleton<LocalizationHelper>();
 
 var app = builder.Build();
 
