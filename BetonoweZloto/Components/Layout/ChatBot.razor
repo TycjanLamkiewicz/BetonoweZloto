@@ -1,3 +1,4 @@
+@rendermode InteractiveServer
 @using Microsoft.AspNetCore.Components.Web
 @inject IJSRuntime JSRuntime
 
@@ -39,8 +40,6 @@
                 </div>
                 <div class="bg-white px-4 py-2 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 border border-gray-100">
                     Cześć! Jestem asystentem AI biura BetonoweZłoto. W czym mogę pomóc? 
-                    <br/><br/>
-                    (To jest tylko wersja demonstracyjna - PoC)
                 </div>
             </div>
 
@@ -134,7 +133,8 @@
         isTyping = false;
         messages.Add(new ChatMessage 
         { 
-            Text = "To jest odpowiedź demonstracyjna z bota. " + GetRandomResponse(), 
+            Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            // Text = "To jest odpowiedź demonstracyjna z bota. " + GetRandomResponse(), 
             IsUser = false 
         });
     }
