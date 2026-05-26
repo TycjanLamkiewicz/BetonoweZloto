@@ -1,0 +1,161 @@
+@using Microsoft.AspNetCore.Components.Web
+@inject IJSRuntime JSRuntime
+
+<div class="fixed bottom-4 right-4 z-[100]" style="z-index: 100;">
+    <!-- Chat Button -->
+    <button @onclick="ToggleChat"
+            class="bg-gold-500 hover:bg-gold-400 text-gray-900 rounded-full p-4 shadow-lg transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gold-500 @(isOpen ? "hidden" : "")"
+            aria-label="Otwórz czat AI">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+        </svg>
+    </button>
+
+    <!-- Chat Window -->
+    <div class="flex flex-col bg-white rounded-lg shadow-xl border border-gray-200 transition-all duration-300 ease-in-out origin-bottom-right fixed bottom-4 right-4"
+         style="width: 350px; height: 500px; max-height: calc(100vh - 2rem); @(isOpen ? "transform: scale(1); opacity: 1;" : "transform: scale(0); opacity: 0; pointer-events: none;")">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between p-4 bg-gray-900 text-white rounded-t-lg">
+            <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <h3 class="font-semibold">Asystent BetonoweZloto</h3>
+            </div>
+            <button @onclick="ToggleChat" class="text-gray-300 hover:text-white transition-colors p-1" aria-label="Zamknij czat">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Messages Area -->
+        <div class="flex-1 p-4 overflow-y-auto bg-gray-50 flex flex-col gap-3" id="chat-messages">
+            <!-- Initial Message -->
+            <div class="flex gap-2 max-w-[85%] self-start">
+                <div class="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <div class="bg-white px-4 py-2 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 border border-gray-100">
+                    Cześć! Jestem asystentem AI biura BetonoweZłoto. W czym mogę pomóc? 
+                    <br/><br/>
+                    (To jest tylko wersja demonstracyjna - PoC)
+                </div>
+            </div>
+
+            @foreach (var message in messages)
+            {
+                <div class="flex gap-2 max-w-[85%] @(message.IsUser ? "self-end" : "self-start")">
+                    @if (!message.IsUser)
+                    {
+                        <div class="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div class="bg-white px-4 py-2 rounded-2xl rounded-tl-none shadow-sm text-sm text-gray-700 border border-gray-100">
+                            @message.Text
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="bg-blue-600 text-white px-4 py-2 rounded-2xl rounded-tr-none shadow-sm text-sm">
+                            @message.Text
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (isTyping)
+            {
+                <div class="flex gap-2 max-w-[85%] self-start">
+                    <div class="w-8 h-8 rounded-full bg-gold-500 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <div class="bg-white px-4 py-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 flex items-center gap-1">
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-3 bg-white border-t border-gray-200 rounded-b-lg">
+            <form @onsubmit="SendMessage" class="flex items-center gap-2">
+                <input type="text"
+                       @bind="currentMessage"
+                       @bind:event="oninput"
+                       placeholder="Wpisz wiadomość..."
+                       class="flex-1 bg-gray-50 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-shadow"
+                       disabled="@isTyping" />
+                <button type="submit"
+                        disabled="@(string.IsNullOrWhiteSpace(currentMessage) || isTyping)"
+                        class="bg-blue-600 text-white rounded-full p-2 hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <svg class="w-5 h-5 translate-x-[-1px] translate-y-[1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isOpen = false;
+    private string currentMessage = "";
+    private bool isTyping = false;
+    private List<ChatMessage> messages = new();
+
+    private void ToggleChat()
+    {
+        isOpen = !isOpen;
+    }
+
+    private async Task SendMessage()
+    {
+        if (string.IsNullOrWhiteSpace(currentMessage)) return;
+
+        var userMsg = currentMessage;
+        currentMessage = "";
+
+        messages.Add(new ChatMessage { Text = userMsg, IsUser = true });
+        isTyping = true;
+
+        await Task.Delay(100); // UI update
+
+        // Simulate AI thinking delay
+        await Task.Delay(1000 + new Random().Next(1000));
+
+        isTyping = false;
+        messages.Add(new ChatMessage 
+        { 
+            Text = "To jest odpowiedź demonstracyjna z bota. " + GetRandomResponse(), 
+            IsUser = false 
+        });
+    }
+
+    private string GetRandomResponse()
+    {
+        var responses = new[]
+        {
+            "Mamy wiele ciekawych ofert w tej okolicy. Chcesz zobaczyć szczegóły?",
+            "Ceny mieszkań w tej dzielnicy zaczynają się od 12 tys. za metr kwadratowy.",
+            "Mogę umówić Cię na spotkanie z naszym doradcą. Jaki termin by Ci odpowiadał?",
+            "Niestety nie mam dostępu do prawdziwych danych, jestem tylko interfejsem testowym (PoC).",
+            "Dla naszych klientów premium oferujemy specjalne zniżki na prowizję.",
+            "Świetnie! Zapiszę Twoje preferencje."
+        };
+        return responses[new Random().Next(responses.Length)];
+    }
+
+    private class ChatMessage
+    {
+        public string Text { get; set; } = "";
+        public bool IsUser { get; set; }
+    }
+}
